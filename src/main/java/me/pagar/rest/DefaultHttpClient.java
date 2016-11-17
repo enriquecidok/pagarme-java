@@ -35,7 +35,6 @@ public class DefaultHttpClient implements HttpClient {
 	public HttpResponse get(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException {
 		Headers requestHeaders = Headers.of(headers == null ? new HashMap<String, String>() : headers);
 		
-		String endpoint = url + "?";
 		if(parameters != null){
 			url += "?" + toQueryParams(parameters);
 		}
