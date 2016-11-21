@@ -1,15 +1,10 @@
 package me.pagar.endpoint;
 
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
 
 import me.pagar.PagarMeService;
 import me.pagar.converter.ObjectConverter;
@@ -28,8 +23,7 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 	private ObjectConverter converter;
 	private final Class<T> clazz;
 
-	@SuppressWarnings("unchecked")
-	protected EndpointCommonsImpl(HttpClient client, Logger logger, ObjectConverter converter, Class clazz) {
+	protected EndpointCommonsImpl(HttpClient client, Logger logger, ObjectConverter converter, Class<T> clazz) {
 		this.client = client;
 		this.logger = logger;
 		this.converter = converter;
@@ -41,11 +35,9 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		String url = PagarMeService.getEndpoint() + "/" + path;
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> parameters = (Map<String, Object>)mapper.convertValue(request, Map.class);
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("User-Agent", "Java-1.0");
 		HttpResponse response = null;
 		try {
-			response = this.client.get(url, parameters, headers, null);
+			response = this.client.get(url, parameters, null, null);
 		} catch (HttpException e) {
 			logger.logError("HttpException. FIND " + url, null);
 			throw e;
@@ -62,11 +54,9 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 	public T save(String path, RequestObject request) throws HttpException, IOException, ParserException {
 		String url = PagarMeService.getEndpoint() + "/" + path;
 		Map<String,Object> parameters = converter.objectToMap(request);
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("User-Agent", "Java-1.0");
 		HttpResponse response = null;
 		try {
-			response = this.client.post(url, parameters, headers, "application/json");
+			response = this.client.post(url, parameters, null, "application/json");
 		} catch (HttpException e) {
 			System.out.println(e.getResponse().getBody());
 			logger.logError("HttpException. SAVE " + url + ". Parameters: " + parameters, null);
