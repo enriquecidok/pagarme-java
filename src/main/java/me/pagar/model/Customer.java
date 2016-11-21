@@ -1,6 +1,6 @@
 package me.pagar.model;
 
-public class Customer extends PagarmeObject {
+public class Customer extends PagarmeObject<Customer> {
 
 	private String documentNumber;
 	private String name;
@@ -13,44 +13,51 @@ public class Customer extends PagarmeObject {
 	public String getDocumentNumber() {
 		return documentNumber;
 	}
-	public void setDocumentNumber(String documentNumber) {
+	public Customer setDocumentNumber(String documentNumber) {
 		this.documentNumber = documentNumber;
+		return this;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public Customer setName(String name) {
 		this.name = name;
+		return this;
 	}
 	public String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+	public Customer setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 	public String getBornAt() {
 		return bornAt;
 	}
-	public void setBornAt(String bornAt) {
+	public Customer setBornAt(String bornAt) {
 		this.bornAt = bornAt;
+		return this;
 	}
 	public String getGender() {
 		return gender;
 	}
-	public void setGender(String gender) {
+	public Customer setGender(String gender) {
 		this.gender = gender;
+		return this;
 	}
 	public Address getAddress() {
 		return address;
 	}
-	public void setAddress(Address address) {
+	public Customer setAddress(Address address) {
 		this.address = address;
+		return this;
 	}
 	public Phone getPhone() {
 		return phone;
 	}
-	public void setPhone(Phone phone) {
+	public Customer setPhone(Phone phone) {
 		this.phone = phone;
+		return this;
 	}
 	
 	

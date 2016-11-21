@@ -1,40 +1,58 @@
 package me.pagar.model.request;
 
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import me.pagar.model.CardAbstract;
 
-public class CardRequest extends CardAbstract implements Request {
+public class CardRequest extends CardAbstract<CardRequest> implements RequestObject {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6177998031744400057L;
 	private String number;
-	private String expirationDate;
+	private DateTime expirationDate;
 	private String customerId;
 	private String hash;
+	private String cvv;
+	
 	public String getNumber() {
 		return number;
 	}
-	public void setNumber(String number) {
+	public CardRequest setNumber(String number) {
 		this.number = number;
+		return this;
 	}
-	public String getExpirationDate() {
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMyy")
+	public DateTime getExpirationDate() {
 		return expirationDate;
 	}
-	public void setExpirationDate(String expirationDate) {
+	public CardRequest setExpirationDate(DateTime expirationDate) {
 		this.expirationDate = expirationDate;
+		return this;
 	}
 	public String getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(String customerId) {
+	public CardRequest setCustomerId(String customerId) {
 		this.customerId = customerId;
+		return this;
 	}
 	public String getHash() {
 		return hash;
 	}
-	public void setHash(String hash) {
+	public CardRequest setHash(String hash) {
 		this.hash = hash;
+		return this;
+	}
+	public String getCvv() {
+		return cvv;
+	}
+	public CardRequest setCvv(String cvv) {
+		this.cvv = cvv;
+		return this;
 	}
 	
 	

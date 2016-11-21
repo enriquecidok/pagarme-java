@@ -1,9 +1,9 @@
 package me.pagar.model;
 
-import me.pagar.model.request.Request;
-import me.pagar.model.response.Response;
+import me.pagar.model.request.RequestObject;
+import me.pagar.model.response.ResponseObject;
 
-public class Phone implements Request, Response{
+public class Phone implements RequestObject, ResponseObject{
 
 	/**
 	 * 
@@ -14,14 +14,16 @@ public class Phone implements Request, Response{
 	public String getDdd() {
 		return ddd;
 	}
-	public void setDdd(String ddd) {
+	public Phone setDdd(String ddd) {
 		this.ddd = ddd;
+		return this;
 	}
 	public String getNumber() {
 		return number;
 	}
-	public void setNumber(String number) {
+	public Phone setNumber(String number) {
 		this.number = number;
+		return this;
 	}
 	
 	

@@ -3,45 +3,41 @@ package tests.endpoint;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.Assert;
 import me.pagar.PagarMeService;
-import me.pagar.converter.DefaultObjectMapper;
-import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
-import me.pagar.endpoint.Transactions;
-import me.pagar.logging.DefaultLogger;
-import me.pagar.logging.Logger;
+import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.request.TransactionRequest;
 import me.pagar.model.response.TransactionResponse;
-import me.pagar.rest.DefaultHttpClient;
-import me.pagar.rest.HttpClient;
 import me.pagar.rest.HttpException;
-import okhttp3.OkHttpClient;
+import tests.factory.TransactionFactory;
 
 public class TransactionEndpointTests {
 
-	private Transactions transactions;
+	private TransactionFactory transactionFactory;
+	
 	public TransactionEndpointTests() {
-		ObjectMapper mapper = new ObjectMapper();
-		Logger logger = new DefaultLogger();
-		ObjectConverter converter = new DefaultObjectMapper(mapper, logger);
-		HttpClient client = new DefaultHttpClient(new OkHttpClient(), logger);
-		this.transactions = new Transactions(client, logger, converter);
+		transactionFactory = new TransactionFactory();
+		PagarMeService.init("ak_test_zXjKL8u5uxn25HNxHviPbhthNV0nL7", "");
 	}
 	
 	@Test
-	public void testFindTransaction() throws HttpException, IOException, ParserException{
-		PagarMeService.init("ak_test_zXjKL8u5uxn25HNxHviPbhthNV0nL7", "");
+	public void testFindTransactionCollection() throws HttpException, IOException, ParserException{
 		TransactionRequest transactionFilter = new TransactionRequest();
-//		Address address = new Address();
-//		address.setComplementary("complement");
-//		transactionFilter.setAddress(address);
-//		transactionFilter.setAmount(10000);
-		ArrayList<TransactionResponse> foundTransactions = transactions.find(transactionFilter);
+		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.find(transactionFilter);
 		Assert.assertTrue(foundTransactions.size() > 1);
+	}
+	
+	@Test
+	public void testSaveTransaction() throws HttpException, IOException, ParserException{
+		TransactionRequest newTransactionParameters = transactionFactory.create(PaymentMethod.CREDIT_CARD, DateTime.now());
+		TransactionResponse newTransaction = PagarMeService.transactions.save(newTransactionParameters);
+		
+		TransactionRequest foundTransactionRequest = new TransactionRequest().setId(newTransaction.getId());
+		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.find(foundTransactionRequest);
+		Assert.assertTrue(foundTransactions.size() == 1);
 	}
 }

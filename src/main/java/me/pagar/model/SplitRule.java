@@ -1,48 +1,53 @@
 package me.pagar.model;
 
-import me.pagar.model.request.Request;
-import me.pagar.model.response.Response;
+import me.pagar.model.request.RequestObject;
+import me.pagar.model.response.ResponseObject;
 
-public class SplitRule extends PagarmeObject implements Response, Request {
+public class SplitRule extends PagarmeObject<SplitRule> implements ResponseObject, RequestObject {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2023527027241606846L;
 	private String recipientId;
-	private String chargeProcessingfee;
-	private String liable;
-	private String percentage;
-	private String amount;
+	private Boolean chargeProcessingfee;
+	private Boolean liable;
+	private Integer percentage;
+	private Integer amount;
 	public String getRecipientId() {
 		return recipientId;
 	}
-	public void setRecipientId(String recipientId) {
+	public SplitRule setRecipientId(String recipientId) {
 		this.recipientId = recipientId;
+		return this;
 	}
-	public String getChargeProcessingfee() {
+	public Boolean getChargeProcessingfee() {
 		return chargeProcessingfee;
 	}
-	public void setChargeProcessingfee(String chargeProcessingfee) {
+	public SplitRule setChargeProcessingfee(Boolean chargeProcessingfee) {
 		this.chargeProcessingfee = chargeProcessingfee;
+		return this;
 	}
-	public String getLiable() {
+	public Boolean getLiable() {
 		return liable;
 	}
-	public void setLiable(String liable) {
+	public SplitRule setLiable(Boolean liable) {
 		this.liable = liable;
+		return this;
 	}
-	public String getPercentage() {
+	public Integer getPercentage() {
 		return percentage;
 	}
-	public void setPercentage(String percentage) {
+	public SplitRule setPercentage(Integer percentage) {
 		this.percentage = percentage;
+		return this;
 	}
-	public String getAmount() {
+	public Integer getAmount() {
 		return amount;
 	}
-	public void setAmount(String amount) {
+	public SplitRule setAmount(Integer amount) {
 		this.amount = amount;
+		return this;
 	}
 	
 	

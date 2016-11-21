@@ -3,6 +3,7 @@ package me.pagar.endpoint;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +15,13 @@ import me.pagar.PagarMeService;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
-import me.pagar.model.request.Request;
-import me.pagar.model.response.Response;
+import me.pagar.model.request.RequestObject;
+import me.pagar.model.response.ResponseObject;
 import me.pagar.rest.HttpClient;
 import me.pagar.rest.HttpException;
 import me.pagar.rest.HttpResponse;
 
-abstract class EndpointsCommons<T extends Response> {
+class EndpointCommonsImpl<T extends ResponseObject> {
 
 	private HttpClient client;
 	private Logger logger;
@@ -28,27 +29,18 @@ abstract class EndpointsCommons<T extends Response> {
 	private final Class<T> clazz;
 
 	@SuppressWarnings("unchecked")
-	@Inject
-	public EndpointsCommons(HttpClient client, Logger logger, ObjectConverter converter) {
+	protected EndpointCommonsImpl(HttpClient client, Logger logger, ObjectConverter converter, Class clazz) {
 		this.client = client;
 		this.logger = logger;
 		this.converter = converter;
-		Type[] types = ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments();
-		if(types.length > 0){
-			this.clazz = (Class<T>) types[0];
-		}else{
-			this.clazz = null;
-		}
+		this.clazz = clazz;
 	}
 	
-	protected abstract String getApiObjectPath();
-	
 	@SuppressWarnings("unchecked")
-	public ArrayList<T> find(Request request) throws HttpException, IOException, ParserException{
-		String url = PagarMeService.getEndpoint() + "/" + getApiObjectPath();
+	public ArrayList<T> find(String path, RequestObject request) throws HttpException, IOException, ParserException{
+		String url = PagarMeService.getEndpoint() + "/" + path;
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> parameters = (Map<String, Object>)mapper.convertValue(request, Map.class);
-		parameters.put("api_key", PagarMeService.getApiKey());
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("User-Agent", "Java-1.0");
 		HttpResponse response = null;
@@ -65,5 +57,26 @@ abstract class EndpointsCommons<T extends Response> {
 		
 		ArrayList<T> objects = converter.jsonToObjects(response.getBody(), clazz);
 		return objects;
+	}
+	
+	public T save(String path, RequestObject request) throws HttpException, IOException, ParserException {
+		String url = PagarMeService.getEndpoint() + "/" + path;
+		Map<String,Object> parameters = converter.objectToMap(request);
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("User-Agent", "Java-1.0");
+		HttpResponse response = null;
+		try {
+			response = this.client.post(url, parameters, headers, "application/json");
+		} catch (HttpException e) {
+			System.out.println(e.getResponse().getBody());
+			logger.logError("HttpException. SAVE " + url + ". Parameters: " + parameters, null);
+			throw e;
+		} catch (IOException e) {
+			logger.logError("IOException. SAVE " + url + ". Parameters: " + parameters, null);
+			throw e;
+		}
+		
+		String responseJsonBody = response.getBody();
+		return converter.jsonToObject(responseJsonBody, clazz);
 	}
 }

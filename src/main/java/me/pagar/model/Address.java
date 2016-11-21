@@ -1,9 +1,9 @@
 package me.pagar.model;
 
-import me.pagar.model.request.Request;
-import me.pagar.model.response.Response;
+import me.pagar.model.request.RequestObject;
+import me.pagar.model.response.ResponseObject;
 
-public class Address implements Request, Response{
+public class Address implements RequestObject, ResponseObject{
 
 	/**
 	 * 
@@ -17,32 +17,37 @@ public class Address implements Request, Response{
 	public String getStreet() {
 		return street;
 	}
-	public void setStreet(String street) {
+	public Address setStreet(String street) {
 		this.street = street;
+		return this;
 	}
 	public String getStreetNumber() {
 		return streetNumber;
 	}
-	public void setStreetNumber(String streetNumber) {
+	public Address setStreetNumber(String streetNumber) {
 		this.streetNumber = streetNumber;
+		return this;
 	}
 	public String getComplementary() {
 		return complementary;
 	}
-	public void setComplementary(String complementary) {
+	public Address setComplementary(String complementary) {
 		this.complementary = complementary;
+		return this;
 	}
 	public String getNeighborhood() {
 		return neighborhood;
 	}
-	public void setNeighborhood(String neighborhood) {
+	public Address setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
+		return this;
 	}
 	public String getZipcode() {
 		return zipcode;
 	}
-	public void setZipcode(String zipcode) {
+	public Address setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+		return this;
 	}
 	
 	

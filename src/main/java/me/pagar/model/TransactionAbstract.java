@@ -1,113 +1,114 @@
 package me.pagar.model;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
+import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.request.CardRequest;
 
-public abstract class TransactionAbstract extends PagarmeObject {
+@SuppressWarnings("unchecked")
+public abstract class TransactionAbstract<T extends Model> extends PagarmeObject<T> {
 
-	private String paymentMethod;
+	private PaymentMethod paymentMethod;
 	private String postbackUrl;
 	private Integer amount;
-	private String async;
+	private Boolean async;
 	private Integer installments;
-	private DateTime boletoExpirationdate;
+	private DateTime boletoExpirationDate;
 	private String softDescriptor;
 	private Boolean capture;
-	private String metadata;
-	private List<SplitRule> splitRules;
+	private Metadata metadata;
+	private SplitRule[] splitRules;
 	private CardRequest card;
 	private Customer customer;
-	private Phone phone;
-	private Address address;
 	
 	public CardRequest getCard() {
 		return card;
 	}
-	public void setCard(CardRequest card) {
+	public T setCard(CardRequest card) {
 		this.card = card;
+		return (T)this;
 	}
 	public Customer getCustomer() {
 		return customer;
 	}
-	public void setCustomer(Customer customer) {
+	public T setCustomer(Customer customer) {
 		this.customer = customer;
+		return (T)this;
 	}
 	
-	public String getPaymentMethod() {
+	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
-	public void setPaymentMethod(String paymentMethod) {
+	public T setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
+		return (T)this;
 	}
 	public String getPostbackUrl() {
 		return postbackUrl;
 	}
-	public void setPostbackUrl(String postbackUrl) {
+	public T setPostbackUrl(String postbackUrl) {
 		this.postbackUrl = postbackUrl;
+		return (T)this;
 	}
-	public String getAsync() {
+	public Boolean getAsync() {
 		return async;
 	}
-	public void setAsync(String async) {
+	public T setAsync(Boolean async) {
 		this.async = async;
+		return (T)this;
 	}
 	public Integer getInstallments() {
 		return installments;
 	}
-	public void setInstallments(Integer installments) {
+	public T setInstallments(Integer installments) {
 		this.installments = installments;
+		return (T)this;
 	}
-	public DateTime getBoletoExpirationdate() {
-		return boletoExpirationdate;
+	@JsonFormat(shape=Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
+	public DateTime getBoletoExpirationDate() {
+		return boletoExpirationDate;
 	}
-	public void setBoletoExpirationdate(DateTime boletoExpirationdate) {
-		this.boletoExpirationdate = boletoExpirationdate;
+	public T setBoletoExpirationDate(DateTime boletoExpirationdate) {
+		this.boletoExpirationDate = boletoExpirationdate;
+		return (T)this;
 	}
 	public String getSoftDescriptor() {
 		return softDescriptor;
 	}
-	public void setSoftDescriptor(String softDescriptor) {
+	public T setSoftDescriptor(String softDescriptor) {
 		this.softDescriptor = softDescriptor;
+		return (T)this;
 	}
 	public Boolean getCapture() {
 		return capture;
 	}
-	public void setCapture(Boolean capture) {
+	public T setCapture(Boolean capture) {
 		this.capture = capture;
+		return (T)this;
 	}
-	public String getMetadata() {
+	public Metadata getMetadata() {
 		return metadata;
 	}
-	public void setMetadata(String metadata) {
+	public T setMetadata(Metadata metadata) {
 		this.metadata = metadata;
+		return (T)this;
 	}
-	public List<SplitRule> getSplitRules() {
+	public SplitRule[] getSplitRules() {
 		return splitRules;
 	}
-	public void setSplitRules(List<SplitRule> splitRules) {
+	public T setSplitRules(SplitRule[] splitRules) {
 		this.splitRules = splitRules;
+		return (T)this;
 	}
 	public Integer getAmount() {
 		return amount;
 	}
-	public void setAmount(Integer amount) {
+	public T setAmount(Integer amount) {
 		this.amount = amount;
+		return (T)this;
 	}
-	public Phone getPhone() {
-		return phone;
-	}
-	public void setPhone(Phone phone) {
-		this.phone = phone;
-	}
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	
 	
 }

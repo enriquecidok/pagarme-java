@@ -1,8 +1,9 @@
 package me.pagar.model.response;
 
+import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.TransactionAbstract;
 
-public class TransactionResponse extends TransactionAbstract implements Response {
+public class TransactionResponse extends TransactionAbstract<TransactionResponse> implements ResponseObject {
 
 	private String status;
 	private String statusReason;
@@ -13,108 +14,116 @@ public class TransactionResponse extends TransactionAbstract implements Response
 	private String tid;
 	private String nsu;
 	private String cost;
-	private String paymentMethod;
+	private PaymentMethod paymentMethod;
 	private String boletoUrl;
 	private String boletoBarcode;
-	private String boletoExpirationDate;
 	private String referer;
 	private String ip;
 	private String subscriptionId;
 	public String getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public TransactionResponse setStatus(String status) {
 		this.status = status;
+		return this;
 	}
 	public String getStatusReason() {
 		return statusReason;
 	}
-	public void setStatusReason(String statusReason) {
+	public TransactionResponse setStatusReason(String statusReason) {
 		this.statusReason = statusReason;
+		return this;
 	}
 	public String getAcquirerName() {
 		return acquirerName;
 	}
-	public void setAcquirerName(String acquirerName) {
+	public TransactionResponse setAcquirerName(String acquirerName) {
 		this.acquirerName = acquirerName;
+		return this;
 	}
 	public String getAcquirerResponseCode() {
 		return acquirerResponseCode;
 	}
-	public void setAcquirerResponseCode(String acquirerResponseCode) {
+	public TransactionResponse setAcquirerResponseCode(String acquirerResponseCode) {
 		this.acquirerResponseCode = acquirerResponseCode;
+		return this;
 	}
 	public String getAuthorizationCode() {
 		return authorizationCode;
 	}
-	public void setAuthorizationCode(String authorizationCode) {
+	public TransactionResponse setAuthorizationCode(String authorizationCode) {
 		this.authorizationCode = authorizationCode;
+		return this;
 	}
 	public String getSoftDescriptor() {
 		return softDescriptor;
 	}
-	public void setSoftDescriptor(String softDescriptor) {
+	public TransactionResponse setSoftDescriptor(String softDescriptor) {
 		this.softDescriptor = softDescriptor;
+		return this;
 	}
 	public String getTid() {
 		return tid;
 	}
-	public void setTid(String tid) {
+	public TransactionResponse setTid(String tid) {
 		this.tid = tid;
+		return this;
 	}
 	public String getNsu() {
 		return nsu;
 	}
-	public void setNsu(String nsu) {
+	public TransactionResponse setNsu(String nsu) {
 		this.nsu = nsu;
+		return this;
 	}
 	public String getCost() {
 		return cost;
 	}
-	public void setCost(String cost) {
+	public TransactionResponse setCost(String cost) {
 		this.cost = cost;
+		return this;
 	}
-	public String getPaymentMethod() {
+	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
-	public void setPaymentMethod(String paymentMethod) {
+	public TransactionResponse setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
+		return this;
 	}
 	public String getBoletoUrl() {
 		return boletoUrl;
 	}
-	public void setBoletoUrl(String boletoUrl) {
+	public TransactionResponse setBoletoUrl(String boletoUrl) {
 		this.boletoUrl = boletoUrl;
+		return this;
 	}
 	public String getBoletoBarcode() {
 		return boletoBarcode;
 	}
-	public void setBoletoBarcode(String boletoBarcode) {
+	public TransactionResponse setBoletoBarcode(String boletoBarcode) {
 		this.boletoBarcode = boletoBarcode;
-	}
-	public String getBoletoExpirationDate() {
-		return boletoExpirationDate;
-	}
-	public void setBoletoExpirationDate(String boletoExpirationDate) {
-		this.boletoExpirationDate = boletoExpirationDate;
+		return this;
 	}
 	public String getReferer() {
 		return referer;
 	}
-	public void setReferer(String referer) {
+	public TransactionResponse setReferer(String referer) {
 		this.referer = referer;
+		return this;
 	}
 	public String getIp() {
 		return ip;
 	}
-	public void setIp(String ip) {
+	public TransactionResponse setIp(String ip) {
 		this.ip = ip;
+		return this;
 	}
 	public String getSubscriptionId() {
 		return subscriptionId;
 	}
-	public void setSubscriptionId(String subscriptionId) {
+	public TransactionResponse setSubscriptionId(String subscriptionId) {
 		this.subscriptionId = subscriptionId;
+		return this;
 	}
 	
 	

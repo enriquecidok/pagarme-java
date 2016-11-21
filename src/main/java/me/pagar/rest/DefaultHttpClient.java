@@ -8,6 +8,9 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 
+import me.pagar.annotations.BeforeRequest;
+import me.pagar.converter.ObjectConverter;
+import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -25,13 +28,16 @@ public class DefaultHttpClient implements HttpClient {
 
 	private OkHttpClient client;
 	private Logger logger;
+	private ObjectConverter converter;
 
 	@Inject
-	public DefaultHttpClient(OkHttpClient client, Logger logger) {
+	protected DefaultHttpClient(OkHttpClient client, Logger logger, ObjectConverter converter) {
 		this.client = client;
 		this.logger = logger;
+		this.converter = converter;
 	}
 	
+	@BeforeRequest
 	public HttpResponse get(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException {
 		Headers requestHeaders = Headers.of(headers == null ? new HashMap<String, String>() : headers);
 		
@@ -58,13 +64,14 @@ public class DefaultHttpClient implements HttpClient {
 		return new DefaultHttpResponse(response);
 	}
 
-	public HttpResponse put(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException {
+	@BeforeRequest
+	public HttpResponse put(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException, ParserException {
 		Headers requestHeaders = Headers.of(headers == null ? new HashMap<String, String>() : headers);
 
 		String params = "";
 		MediaType paramsType = MediaType.parse("text/plain");
 		if(parameters != null){
-			params = parameters.toString();
+			params = converter.objectToJson(parameters);
 		}
 		if(mediaType != null){
 			paramsType = MediaType.parse(mediaType);
@@ -89,13 +96,14 @@ public class DefaultHttpClient implements HttpClient {
 		return new DefaultHttpResponse(response);
 	}
 
-	public HttpResponse post(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException {
+	@BeforeRequest
+	public HttpResponse post(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException, ParserException {
 		Headers requestHeaders = Headers.of(headers == null ? new HashMap<String, String>() : headers);
 		
 		String params = "";
 		MediaType paramsType = MediaType.parse("text/plain");
 		if(parameters != null){
-			params = parameters.toString();
+			params = converter.objectToJson(parameters);
 		}
 		if(mediaType != null){
 			paramsType = MediaType.parse(mediaType);
@@ -114,13 +122,16 @@ public class DefaultHttpClient implements HttpClient {
 		}catch(IOException e){
 			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
 		}
-		if (!response.isSuccessful()) 
+		if (!response.isSuccessful()) {
+			System.out.println(response.body().toString());
 	    	throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
+		}
 
 		return new DefaultHttpResponse(response);
 	}
 	
-	private String toQueryParams(Map<String, Object> parameters){
+	private String toQueryParams(Map<String, Object> request){
+		Map<String, Object> parameters = this.converter.objectToMap(request);
 		StringBuilder builder = new StringBuilder();
 		toQueryParamsRecursive(new ArrayList<String>(), parameters, builder);
 		return builder.toString();
@@ -151,6 +162,6 @@ public class DefaultHttpClient implements HttpClient {
 			
 		}
 	}
-	
+
 	
 }

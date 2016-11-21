@@ -1,22 +1,17 @@
 package me.pagar.model;
 
-import me.pagar.model.request.Request;
-import me.pagar.model.response.Response;
+@SuppressWarnings("unchecked")
+public abstract class CardAbstract<T extends Model> extends PagarmeObject<T> {
 
-public abstract class CardAbstract extends PagarmeObject implements Request, Response {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2587903266080648746L;
 	private String holderName;
 
 	public String getHolderName() {
 		return holderName;
 	}
 
-	public void setHolderName(String holderName) {
+	public T setHolderName(String holderName) {
 		this.holderName = holderName;
+		return (T)this;
 	}
 	
 }
