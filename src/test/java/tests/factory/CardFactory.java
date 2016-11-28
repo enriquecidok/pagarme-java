@@ -7,10 +7,10 @@ import me.pagar.model.request.CardRequest;
 public class CardFactory {
 
 	public CardRequest create() {
-		return new CardRequest()
-				.setNumber("4242424242424242")
-				.setCvv("122")
-				.setExpirationDate(DateTime.now().plusMonths(12))
-				.setHolderName("Teste");
+		return CardRequest.builder()
+				.number("4242424242424242")
+				.cvv("122")
+				.expirationDate(DateTime.now().plusMonths(12))
+				.holderName("Teste").build();
 	}
 }

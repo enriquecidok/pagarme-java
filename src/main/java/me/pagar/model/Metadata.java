@@ -8,7 +8,7 @@ import java.util.Map;
 import me.pagar.model.request.RequestObject;
 import me.pagar.model.response.ResponseObject;
 
-public class Metadata extends HashMap<String , Object> implements RequestObject, ResponseObject{
+public class Metadata extends HashMap<String , Object> implements RequestObject, ResponseObject, Map<String, Object>{
 
 	/**
 	 * 

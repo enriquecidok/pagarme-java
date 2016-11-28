@@ -1,9 +1,20 @@
 package me.pagar.model.response;
 
-import me.pagar.enumeration.PaymentMethod;
-import me.pagar.model.TransactionAbstract;
+import org.joda.time.DateTime;
 
-public class TransactionResponse extends TransactionAbstract<TransactionResponse> implements ResponseObject {
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import me.pagar.enumeration.PaymentMethod;
+import me.pagar.model.Customer;
+import me.pagar.model.Metadata;
+import me.pagar.model.SplitRule;
+import me.pagar.model.TransactionAbstract;
+import me.pagar.model.request.CardRequest;
+
+@Data
+@NoArgsConstructor
+public class TransactionResponse extends TransactionAbstract implements ResponseObject {
 
 	private String status;
 	private String statusReason;
@@ -20,111 +31,34 @@ public class TransactionResponse extends TransactionAbstract<TransactionResponse
 	private String referer;
 	private String ip;
 	private String subscriptionId;
-	public String getStatus() {
-		return status;
-	}
-	public TransactionResponse setStatus(String status) {
+	
+	@Builder
+	public TransactionResponse(String id, String object, DateTime dateCreated, DateTime dateUpdated,
+			PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
+			DateTime boletoExpirationDate, String softDescriptor, Boolean capture, Metadata metadata,
+			SplitRule[] splitRules, CardRequest card, Customer customer, String status, String statusReason,
+			String acquirerName, String acquirerResponseCode, String authorizationCode, String softDescriptor2,
+			String tid, String nsu, String cost, PaymentMethod paymentMethod2, String boletoUrl, String boletoBarcode,
+			String referer, String ip, String subscriptionId) {
+		super(id, object, dateCreated, dateUpdated, paymentMethod, postbackUrl, amount, async, installments,
+				boletoExpirationDate, softDescriptor, capture, metadata, splitRules, card, customer);
 		this.status = status;
-		return this;
-	}
-	public String getStatusReason() {
-		return statusReason;
-	}
-	public TransactionResponse setStatusReason(String statusReason) {
 		this.statusReason = statusReason;
-		return this;
-	}
-	public String getAcquirerName() {
-		return acquirerName;
-	}
-	public TransactionResponse setAcquirerName(String acquirerName) {
 		this.acquirerName = acquirerName;
-		return this;
-	}
-	public String getAcquirerResponseCode() {
-		return acquirerResponseCode;
-	}
-	public TransactionResponse setAcquirerResponseCode(String acquirerResponseCode) {
 		this.acquirerResponseCode = acquirerResponseCode;
-		return this;
-	}
-	public String getAuthorizationCode() {
-		return authorizationCode;
-	}
-	public TransactionResponse setAuthorizationCode(String authorizationCode) {
 		this.authorizationCode = authorizationCode;
-		return this;
-	}
-	public String getSoftDescriptor() {
-		return softDescriptor;
-	}
-	public TransactionResponse setSoftDescriptor(String softDescriptor) {
-		this.softDescriptor = softDescriptor;
-		return this;
-	}
-	public String getTid() {
-		return tid;
-	}
-	public TransactionResponse setTid(String tid) {
+		softDescriptor = softDescriptor2;
 		this.tid = tid;
-		return this;
-	}
-	public String getNsu() {
-		return nsu;
-	}
-	public TransactionResponse setNsu(String nsu) {
 		this.nsu = nsu;
-		return this;
-	}
-	public String getCost() {
-		return cost;
-	}
-	public TransactionResponse setCost(String cost) {
 		this.cost = cost;
-		return this;
-	}
-	public PaymentMethod getPaymentMethod() {
-		return paymentMethod;
-	}
-	public TransactionResponse setPaymentMethod(PaymentMethod paymentMethod) {
-		this.paymentMethod = paymentMethod;
-		return this;
-	}
-	public String getBoletoUrl() {
-		return boletoUrl;
-	}
-	public TransactionResponse setBoletoUrl(String boletoUrl) {
+		paymentMethod = paymentMethod2;
 		this.boletoUrl = boletoUrl;
-		return this;
-	}
-	public String getBoletoBarcode() {
-		return boletoBarcode;
-	}
-	public TransactionResponse setBoletoBarcode(String boletoBarcode) {
 		this.boletoBarcode = boletoBarcode;
-		return this;
-	}
-	public String getReferer() {
-		return referer;
-	}
-	public TransactionResponse setReferer(String referer) {
 		this.referer = referer;
-		return this;
-	}
-	public String getIp() {
-		return ip;
-	}
-	public TransactionResponse setIp(String ip) {
 		this.ip = ip;
-		return this;
-	}
-	public String getSubscriptionId() {
-		return subscriptionId;
-	}
-	public TransactionResponse setSubscriptionId(String subscriptionId) {
 		this.subscriptionId = subscriptionId;
-		return this;
 	}
+	
 	
 	
 }

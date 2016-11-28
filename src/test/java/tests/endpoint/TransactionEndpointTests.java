@@ -36,7 +36,7 @@ public class TransactionEndpointTests {
 		TransactionRequest newTransactionParameters = transactionFactory.create(PaymentMethod.CREDIT_CARD, DateTime.now());
 		TransactionResponse newTransaction = PagarMeService.transactions.save(newTransactionParameters);
 		
-		TransactionRequest foundTransactionRequest = new TransactionRequest().setId(newTransaction.getId());
+		TransactionRequest foundTransactionRequest = TransactionRequest.builder().id(newTransaction.getId()).build();
 		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.find(foundTransactionRequest);
 		Assert.assertTrue(foundTransactions.size() == 1);
 	}

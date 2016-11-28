@@ -1,7 +1,16 @@
 package me.pagar.model.response;
 
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import me.pagar.model.CardAbstract;
 
-public class CardResponse extends CardAbstract<CardResponse> implements ResponseObject {
+@NoArgsConstructor
+public class CardResponse extends CardAbstract implements ResponseObject {
+	
+	@Builder
+	public CardResponse(String holderName) {
+		super(holderName);
+	}
 
+	
 }

@@ -16,26 +16,26 @@ public class TransactionFactory {
 	}
 	
 	public TransactionRequest create(PaymentMethod paymentMethod, DateTime now){
-		return new TransactionRequest()
-				.setCard(new CardRequest()
-						.setNumber("4242424242424242")
-						.setHolderName("Holder Name")
-						.setExpirationDate(new DateTime().plusMonths(12))
-						.setCvv("122")
+		return TransactionRequest.builder()
+				.card(CardRequest.builder()
+						.number("4242424242424242")
+						.holderName("Holder Name")
+						.expirationDate(new DateTime().plusMonths(12))
+						.cvv("122").build()
 				)
-				.setAmount(10000)
-				.setAsync(false)
-				.setBoletoExpirationDate(now.plusDays(15))
-				.setCapture(true)
-				.setInstallments(12)
-				.setMetadata(new Metadata()
+				.amount(10000)
+				.async(false)
+				.boletoExpirationDate(now.plusDays(15))
+				.capture(true)
+				.installments(12)
+				.metadata(new Metadata()
 						.put("key", "value")
 						.put("key2", new Metadata()
 								.put("key3", "value2")
 						)
 				)
-				.setPaymentMethod(paymentMethod)
-				.setSoftDescriptor("1234567890123")
-				.setCustomer(customerFactory.create());
+				.paymentMethod(paymentMethod)
+				.softDescriptor("1234567890123")
+				.customer(customerFactory.create()).build();
 	}
 }

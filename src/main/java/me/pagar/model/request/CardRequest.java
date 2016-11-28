@@ -4,56 +4,38 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import me.pagar.model.CardAbstract;
 
-public class CardRequest extends CardAbstract<CardRequest> implements RequestObject {
+@Data
+@NoArgsConstructor
+public class CardRequest extends CardAbstract implements RequestObject {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6177998031744400057L;
 	private String number;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMyy")
 	private DateTime expirationDate;
 	private String customerId;
 	private String hash;
 	private String cvv;
 	
-	public String getNumber() {
-		return number;
-	}
-	public CardRequest setNumber(String number) {
+	@Builder
+	public CardRequest(String holderName, String number, DateTime expirationDate, String customerId, String hash,
+			String cvv) {
+		super(holderName);
 		this.number = number;
-		return this;
-	}
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMyy")
-	public DateTime getExpirationDate() {
-		return expirationDate;
-	}
-	public CardRequest setExpirationDate(DateTime expirationDate) {
 		this.expirationDate = expirationDate;
-		return this;
-	}
-	public String getCustomerId() {
-		return customerId;
-	}
-	public CardRequest setCustomerId(String customerId) {
 		this.customerId = customerId;
-		return this;
-	}
-	public String getHash() {
-		return hash;
-	}
-	public CardRequest setHash(String hash) {
 		this.hash = hash;
-		return this;
-	}
-	public String getCvv() {
-		return cvv;
-	}
-	public CardRequest setCvv(String cvv) {
 		this.cvv = cvv;
-		return this;
 	}
+	
 	
 	
 }
