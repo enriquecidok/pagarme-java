@@ -11,11 +11,11 @@ import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.Customer;
 import me.pagar.model.Metadata;
 import me.pagar.model.SplitRule;
-import me.pagar.model.TransactionAbstract;
+import me.pagar.model.Transaction;
 
 @Data
 @NoArgsConstructor
-public class TransactionRequest extends TransactionAbstract implements RequestObject {
+public class TransactionRequest extends Transaction implements RequestObject {
 
 	/**
 	 * 

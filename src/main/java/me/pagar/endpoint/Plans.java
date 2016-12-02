@@ -8,25 +8,26 @@ import com.google.inject.Inject;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
+import me.pagar.model.Plan;
 import me.pagar.model.request.PlanRequest;
 import me.pagar.model.response.PlanResponse;
 import me.pagar.rest.HttpClient;
 import me.pagar.rest.HttpException;
 
-public class PlanEndpoint {
+public class Plans {
 
 	private EndpointCommonsImpl<PlanResponse> endpointCommons;
 	
 	@Inject
-	private PlanEndpoint(HttpClient client, Logger logger, ObjectConverter converter) {
+	private Plans(HttpClient client, Logger logger, ObjectConverter converter) {
 		this.endpointCommons = new EndpointCommonsImpl<PlanResponse>(client, logger, converter, PlanResponse.class);
 	}
 	
-	public ArrayList<PlanResponse> find(PlanRequest request) throws HttpException, IOException, ParserException {
+	public ArrayList<PlanResponse> find(Plan request) throws HttpException, IOException, ParserException {
 		return endpointCommons.find("/plans", request);
 	}
 	
 	public PlanResponse save(PlanRequest request) throws HttpException, IOException, ParserException {
-		return this.endpointCommons.save("/transactions", request);
+		return this.endpointCommons.save("/plans", request);
 	}
 }

@@ -11,7 +11,7 @@ import me.pagar.model.response.ResponseObject;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Phone implements RequestObject, ResponseObject{
+public class Phone extends PagarmeObject implements RequestObject, ResponseObject{
 
 	/**
 	 * 

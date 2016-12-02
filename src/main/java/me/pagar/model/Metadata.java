@@ -5,10 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.pagar.model.request.RequestObject;
-import me.pagar.model.response.ResponseObject;
-
-public class Metadata extends HashMap<String , Object> implements RequestObject, ResponseObject, Map<String, Object>{
+public class Metadata extends HashMap<String , Object> implements Map<String, Object>{
 
 	/**
 	 * 

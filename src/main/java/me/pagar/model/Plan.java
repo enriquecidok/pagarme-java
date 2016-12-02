@@ -2,13 +2,15 @@ package me.pagar.model;
 
 import org.joda.time.DateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.pagar.enumeration.PaymentMethod;
 
 @Data
 @NoArgsConstructor
-public abstract class PlanAbstract extends PagarmeObject {
+@AllArgsConstructor
+public abstract class Plan extends PagarmeObject {
 
 	private Integer amount;
 	private Integer days;
@@ -19,7 +21,7 @@ public abstract class PlanAbstract extends PagarmeObject {
 	private Integer charges;
 	private Integer installments;
 	
-	protected PlanAbstract(String id, String object, DateTime dateCreated, DateTime dateUpdated, Integer amount,
+	protected Plan(String id, String object, DateTime dateCreated, DateTime dateUpdated, Integer amount,
 			Integer days, String name, Integer trial_days, PaymentMethod[] payment_methods, String color,
 			Integer charges, Integer installments) {
 		super(id, object, dateCreated, dateUpdated);

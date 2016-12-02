@@ -1,4 +1,4 @@
-package tests.endpoint;
+package tests.integration.endpoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ public class TransactionEndpointTests {
 	
 	public TransactionEndpointTests() {
 		transactionFactory = new TransactionFactory();
-		PagarMeService.init("ak_test_zXjKL8u5uxn25HNxHviPbhthNV0nL7", "");
 	}
 	
 	@Test

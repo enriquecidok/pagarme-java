@@ -9,12 +9,12 @@ import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.Customer;
 import me.pagar.model.Metadata;
 import me.pagar.model.SplitRule;
-import me.pagar.model.TransactionAbstract;
+import me.pagar.model.Transaction;
 import me.pagar.model.request.CardRequest;
 
 @Data
 @NoArgsConstructor
-public class TransactionResponse extends TransactionAbstract implements ResponseObject {
+public class TransactionResponse extends Transaction implements ResponseObject {
 
 	private String status;
 	private String statusReason;

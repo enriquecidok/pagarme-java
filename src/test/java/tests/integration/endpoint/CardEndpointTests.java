@@ -1,4 +1,4 @@
-package tests.endpoint;
+package tests.integration.endpoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,13 +13,12 @@ import me.pagar.model.response.CardResponse;
 import me.pagar.rest.HttpException;
 import tests.factory.CardFactory;
 
-public class CardEndpointTests {
+public class CardEndpointTests extends IntegrationTest{
 
 	private final CardFactory cardFactory;
 	
 	public CardEndpointTests() {
 		cardFactory = new CardFactory();
-		PagarMeService.init("ak_test_zXjKL8u5uxn25HNxHviPbhthNV0nL7", "");
 	}
 	
 	@Test

@@ -20,14 +20,6 @@
 	  <version>3.4.2</version>
 	</dependency>
 	
-	<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
-	<dependency>
-	    <groupId>org.jboss.resteasy</groupId>
-	    <artifactId>resteasy-client</artifactId>
-	    <version>3.0.19.Final</version>
-	</dependency>
-	
-	
 	<!-- DI -->
 	<dependency>
 	    <groupId>com.google.inject</groupId>
@@ -52,6 +44,12 @@
 	    <groupId>junit</groupId>
 	    <artifactId>junit</artifactId>
 	    <version>4.12</version>
+	    <scope>test</scope>
+	</dependency>
+	<dependency>
+	    <groupId>com.github.tomakehurst</groupId>
+	    <artifactId>wiremock</artifactId>
+	    <version>2.4.1</version>
 	    <scope>test</scope>
 	</dependency>
 	

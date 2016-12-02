@@ -9,7 +9,7 @@ import me.pagar.model.request.CardRequest;
 
 @Data
 @NoArgsConstructor
-public abstract class TransactionAbstract extends PagarmeObject {
+public abstract class Transaction extends PagarmeObject {
 
 	private PaymentMethod paymentMethod;
 	private String postbackUrl;
@@ -24,7 +24,7 @@ public abstract class TransactionAbstract extends PagarmeObject {
 	private CardRequest card;
 	private Customer customer;
 	
-	protected TransactionAbstract(String id, String object, DateTime dateCreated, DateTime dateUpdated,
+	protected Transaction(String id, String object, DateTime dateCreated, DateTime dateUpdated,
 			PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
 			DateTime boletoExpirationDate, String softDescriptor, Boolean capture, Metadata metadata,
 			SplitRule[] splitRules, CardRequest card, Customer customer) {

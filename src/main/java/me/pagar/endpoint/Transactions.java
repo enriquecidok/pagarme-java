@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
+import me.pagar.model.Transaction;
 import me.pagar.model.request.TransactionRequest;
 import me.pagar.model.response.TransactionResponse;
 import me.pagar.rest.HttpClient;
@@ -22,12 +23,12 @@ public class Transactions {
 		this.endpointCommons = new EndpointCommonsImpl<TransactionResponse>(client, logger, converter, TransactionResponse.class);
 	}
 	
-	public ArrayList<TransactionResponse> find(TransactionRequest request) throws HttpException, IOException, ParserException {
-		return endpointCommons.find("/transactions", request);
+	public ArrayList<TransactionResponse> find(Transaction request) throws HttpException, IOException, ParserException {
+		return endpointCommons.find("transactions", request);
 	}
 	
 	public TransactionResponse save(TransactionRequest request) throws HttpException, IOException, ParserException {
-		return this.endpointCommons.save("/transactions", request);
+		return this.endpointCommons.save("transactions", request);
 	}
 
 }

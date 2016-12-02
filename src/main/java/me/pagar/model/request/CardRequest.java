@@ -4,15 +4,14 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.pagar.model.CardAbstract;
+import me.pagar.model.Card;
 
 @Data
 @NoArgsConstructor
-public class CardRequest extends CardAbstract implements RequestObject {
+public class CardRequest extends Card implements RequestObject {
 
 	/**
 	 * 

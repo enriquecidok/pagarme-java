@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class CardAbstract extends PagarmeObject {
+public abstract class Card extends PagarmeObject {
 
 	private String holderName;
 	

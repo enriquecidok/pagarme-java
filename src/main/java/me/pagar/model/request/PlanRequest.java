@@ -6,11 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.pagar.enumeration.PaymentMethod;
-import me.pagar.model.PlanAbstract;
+import me.pagar.model.Plan;
 
 @Data
 @NoArgsConstructor
-public class PlanRequest extends PlanAbstract implements RequestObject{
+public class PlanRequest extends Plan implements RequestObject{
 
 	/**
 	 * 

@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
+import me.pagar.model.Card;
 import me.pagar.model.request.CardRequest;
 import me.pagar.model.response.CardResponse;
 import me.pagar.rest.HttpClient;
@@ -22,11 +23,11 @@ public class Cards {
 		this.endpointCommons = new EndpointCommonsImpl<CardResponse>(client, logger, converter, CardResponse.class);
 	}
 	
-	public ArrayList<CardResponse> find(CardRequest request) throws HttpException, IOException, ParserException {
-		return endpointCommons.find("/cards", request);
+	public ArrayList<CardResponse> find(Card request) throws HttpException, IOException, ParserException {
+		return endpointCommons.find("cards", request);
 	}
 	
 	public CardResponse save(CardRequest request) throws HttpException, IOException, ParserException {
-		return this.endpointCommons.save("/cards", request);
+		return this.endpointCommons.save("cards", request);
 	}
 }

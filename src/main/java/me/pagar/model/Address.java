@@ -11,7 +11,7 @@ import me.pagar.model.response.ResponseObject;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address implements RequestObject, ResponseObject{
+public class Address extends PagarmeObject implements RequestObject, ResponseObject{
 
 	/**
 	 * 
