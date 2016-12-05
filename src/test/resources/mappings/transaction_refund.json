@@ -1,15 +1,14 @@
 {
     "request" : {
-        "urlPattern" : "/1/transactions/[^/]+/collect_payment.*",
+        "urlPattern" : "/1/transactions/[^/]+/refund",
         "method" : "POST",
         "bodyPatterns" : [
-            {"matchesJsonPath": "$.api_key"},
-            {"matchesJsonPath": "$.email"} 
+            {"matchesJsonPath": "$.api_key"}
         ]
     },
     "response" : {
         "status" : 200,
-        "body" : "{}",
+        "bodyFileName" : "/1/transaction_capture.json",
         "headers" : {
             "Content-Type" : "application/json"
         }

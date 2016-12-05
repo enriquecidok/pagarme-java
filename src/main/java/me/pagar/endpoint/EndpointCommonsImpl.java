@@ -97,15 +97,18 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		return converter.jsonToObject(responseJsonBody, clazz);
 	}
 	
-	public T doSomething(RequestObject request, @NonNull String verb) throws HttpException, IOException, ParserException {
+	public T doSomething(@NonNull Model[] models, @NonNull RequestObject request, @NonNull String verb) throws HttpException, IOException, ParserException {
 		
 		String url = PagarMeService.getEndpoint() + "/" + request.getModelPath();
-		String requestId = request.getId();
+		@NonNull String requestId = request.getId();
 		if(requestId != null){
 			url += "/" + requestId;
 		}
 		url += "/" + verb;
 		Map<String,Object> parameters = converter.objectToMap(request);
+		for (@NonNull Model model : models) {
+			parameters.putAll(converter.objectToMap(model));
+		}
 		HttpResponse response = null;
 		try {
 			response = this.client.post(url, parameters, null, "application/json");

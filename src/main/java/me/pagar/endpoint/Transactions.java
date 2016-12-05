@@ -9,6 +9,8 @@ import lombok.NonNull;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
+import me.pagar.model.BankAccount;
+import me.pagar.model.Model;
 import me.pagar.model.Transaction;
 import me.pagar.model.request.TransactionRequest;
 import me.pagar.model.response.TransactionResponse;
@@ -32,19 +34,16 @@ public class Transactions {
 		return this.endpointCommons.save(request);
 	}
 	
-	public TransactionResponse refund(@NonNull TransactionRequest request) throws HttpException, IOException, ParserException{
-		@NonNull String requestId = request.getId();
-		return this.endpointCommons.doSomething(request, "refund");
+	public TransactionResponse refund(@NonNull TransactionRequest request, @NonNull BankAccount bankAccount) throws HttpException, IOException, ParserException{
+		return this.endpointCommons.doSomething(new Model[]{}, request, "refund");
 	}
 	
 	public TransactionResponse capture(@NonNull TransactionRequest request) throws HttpException, IOException, ParserException{
-		@NonNull String requestId = request.getId();
-		return this.endpointCommons.doSomething(request, "capture");
+		return this.endpointCommons.doSomething(new Model[]{}, request, "capture");
 	}
 	
 	public TransactionResponse collectPayment(@NonNull TransactionRequest request) throws HttpException, IOException, ParserException{
-		@NonNull String requestId = request.getId();
-		return this.endpointCommons.doSomething(request, "collect_payment");
+		return this.endpointCommons.doSomething(new Model[]{}, request, "collect_payment");
 	}
 
 }
