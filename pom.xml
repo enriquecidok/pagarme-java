@@ -46,12 +46,13 @@
 	    <version>4.12</version>
 	    <scope>test</scope>
 	</dependency>
-	<dependency>
+	    <dependency>
 	    <groupId>com.github.tomakehurst</groupId>
 	    <artifactId>wiremock</artifactId>
 	    <version>2.4.1</version>
 	    <scope>test</scope>
 	</dependency>
+
 	
 	<!-- SPICINESS -->
 	<dependency>

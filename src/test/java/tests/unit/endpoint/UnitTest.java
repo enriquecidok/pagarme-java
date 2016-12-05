@@ -1,30 +1,17 @@
 package tests.unit.endpoint;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import org.junit.Before;
+import org.junit.Rule;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-
-import me.pagar.PagarMeService;
 public abstract class UnitTest {
 
-	public static WireMockServer wireMockServer;
+	@Rule
+	public WireMockRule wireMockRule = new WireMockRule(8089);
 	
-	@BeforeClass
-	public static void setUp() {
-		wireMockServer = new WireMockServer(options()
-				.needClientAuth(false)
-				.httpsPort(9000));
-		wireMockServer.start();
-		
-		PagarMeService.init("API_KEY", "ENCRYPTION_KEY");
-		PagarMeService.ENDPOINT = "http://localhost:9000";
+	@Before
+	public void beforeAll(){
 	}
 	
-	@AfterClass
-	public static void shutDown() {
-		wireMockServer.shutdown();
-	}
 }

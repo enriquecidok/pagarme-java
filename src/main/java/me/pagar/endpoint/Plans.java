@@ -23,11 +23,11 @@ public class Plans {
 		this.endpointCommons = new EndpointCommonsImpl<PlanResponse>(client, logger, converter, PlanResponse.class);
 	}
 	
-	public ArrayList<PlanResponse> find(Plan request) throws HttpException, IOException, ParserException {
-		return endpointCommons.find("/plans", request);
+	public ArrayList<PlanResponse> findAll(Plan request) throws HttpException, IOException, ParserException {
+		return endpointCommons.find(request);
 	}
 	
 	public PlanResponse save(PlanRequest request) throws HttpException, IOException, ParserException {
-		return this.endpointCommons.save("/plans", request);
+		return this.endpointCommons.save(request);
 	}
 }

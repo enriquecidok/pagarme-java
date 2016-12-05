@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.google.inject.Inject;
 
+import lombok.NonNull;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
@@ -23,12 +24,27 @@ public class Transactions {
 		this.endpointCommons = new EndpointCommonsImpl<TransactionResponse>(client, logger, converter, TransactionResponse.class);
 	}
 	
-	public ArrayList<TransactionResponse> find(Transaction request) throws HttpException, IOException, ParserException {
-		return endpointCommons.find("transactions", request);
+	public ArrayList<TransactionResponse> findAll(Transaction request) throws HttpException, IOException, ParserException {
+		return endpointCommons.find(request);
 	}
 	
 	public TransactionResponse save(TransactionRequest request) throws HttpException, IOException, ParserException {
-		return this.endpointCommons.save("transactions", request);
+		return this.endpointCommons.save(request);
+	}
+	
+	public TransactionResponse refund(@NonNull TransactionRequest request) throws HttpException, IOException, ParserException{
+		@NonNull String requestId = request.getId();
+		return this.endpointCommons.doSomething(request, "refund");
+	}
+	
+	public TransactionResponse capture(@NonNull TransactionRequest request) throws HttpException, IOException, ParserException{
+		@NonNull String requestId = request.getId();
+		return this.endpointCommons.doSomething(request, "capture");
+	}
+	
+	public TransactionResponse collectPayment(@NonNull TransactionRequest request) throws HttpException, IOException, ParserException{
+		@NonNull String requestId = request.getId();
+		return this.endpointCommons.doSomething(request, "collect_payment");
 	}
 
 }

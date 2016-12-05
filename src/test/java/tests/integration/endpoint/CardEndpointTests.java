@@ -24,7 +24,7 @@ public class CardEndpointTests extends IntegrationTest{
 	@Test
 	public void testFindTransactionCollection() throws HttpException, IOException, ParserException{
 		CardRequest cardFilter = new CardRequest();
-		ArrayList<CardResponse> foundCards = PagarMeService.cards.find(cardFilter);
+		ArrayList<CardResponse> foundCards = PagarMeService.cards.findAll(cardFilter);
 		Assert.assertTrue(foundCards.size() > 1);
 	}
 }

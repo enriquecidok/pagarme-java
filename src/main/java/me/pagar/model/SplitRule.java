@@ -33,6 +33,8 @@ public class SplitRule extends PagarmeObject implements ResponseObject, RequestO
 		this.amount = amount;
 	}
 	
-	
+	public String getModelPath() {
+		return "split_rules";
+	}
 	
 }

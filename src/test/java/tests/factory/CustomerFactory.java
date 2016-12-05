@@ -1,6 +1,6 @@
 package tests.factory;
 
-import me.pagar.model.Customer;
+import me.pagar.model.request.CustomerRequest;
 
 public class CustomerFactory {
 
@@ -12,8 +12,8 @@ public class CustomerFactory {
 		this.phoneFactory = new PhoneFactory();
 	}
 	
-	public Customer create(){
-		Customer customer = new Customer();
+	public CustomerRequest create(){
+		CustomerRequest customer = new CustomerRequest();
 		customer.setBornAt("2016-02-22T00:00:00.000Z");
 		customer.setDocumentNumber("35965816804");
 		customer.setEmail("ewfwef@wefew.com");

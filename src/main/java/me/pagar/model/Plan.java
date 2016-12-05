@@ -35,4 +35,8 @@ public abstract class Plan extends PagarmeObject {
 		this.installments = installments;
 	}
 	
+	public String getModelPath() {
+		return "plans";
+	}
+	
 }

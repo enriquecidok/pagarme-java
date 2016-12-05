@@ -1,0 +1,21 @@
+{
+    "request" : {
+      "method" : "GET",
+      "urlPattern" : "/1/transactions.*",
+      "queryParameters" : {
+        "api_key" : {
+          "matches" : ".+"
+        },
+        "id" : {
+          "matches" : ".+"
+        }
+      }
+    },
+    "response" : {
+      "status" : 200,
+      "bodyFileName" : "/1/transactions.json",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    }
+}

@@ -20,4 +20,8 @@ public class Phone extends PagarmeObject implements RequestObject, ResponseObjec
 	private String ddd;
 	private String number;
 	
+	public String getModelPath() {
+		return "phones";
+	}
+	
 }

@@ -23,11 +23,12 @@ public class Cards {
 		this.endpointCommons = new EndpointCommonsImpl<CardResponse>(client, logger, converter, CardResponse.class);
 	}
 	
-	public ArrayList<CardResponse> find(Card request) throws HttpException, IOException, ParserException {
-		return endpointCommons.find("cards", request);
+	public ArrayList<CardResponse> findAll(Card request) throws HttpException, IOException, ParserException {
+		return endpointCommons.find(request);
 	}
 	
 	public CardResponse save(CardRequest request) throws HttpException, IOException, ParserException {
-		return this.endpointCommons.save("cards", request);
+		return this.endpointCommons.save(request);
 	}
+	
 }

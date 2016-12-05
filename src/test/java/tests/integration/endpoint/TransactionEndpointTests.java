@@ -26,7 +26,7 @@ public class TransactionEndpointTests {
 	@Test
 	public void testFindTransactionCollection() throws HttpException, IOException, ParserException{
 		TransactionRequest transactionFilter = new TransactionRequest();
-		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.find(transactionFilter);
+		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.findAll(transactionFilter);
 		Assert.assertTrue(foundTransactions.size() > 1);
 	}
 	
@@ -36,7 +36,7 @@ public class TransactionEndpointTests {
 		TransactionResponse newTransaction = PagarMeService.transactions.save(newTransactionParameters);
 		
 		TransactionRequest foundTransactionRequest = TransactionRequest.builder().id(newTransaction.getId()).build();
-		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.find(foundTransactionRequest);
+		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.findAll(foundTransactionRequest);
 		Assert.assertTrue(foundTransactions.size() == 1);
 	}
 }

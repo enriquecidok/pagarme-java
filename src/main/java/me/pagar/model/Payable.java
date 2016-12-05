@@ -18,4 +18,9 @@ public abstract class Payable extends PagarmeObject {
 	private String splitRuleId;
 	private String paymentDate;
 	private String type;
+	
+	public String getModelPath() {
+		return "payables";
+	}
+	
 }

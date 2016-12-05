@@ -1,0 +1,16 @@
+{
+    "request" : {
+        "urlPattern" : "/1/transactions/[^/]+/capture",
+        "method" : "POST",
+        "bodyPatterns" : [
+            {"matchesJsonPath": "$.api_key"}
+        ]
+    },
+    "response" : {
+        "status" : 200,
+        "bodyFileName" : "/1/transaction_capture.json",
+        "headers" : {
+            "Content-Type" : "application/json"
+        }
+    }
+}

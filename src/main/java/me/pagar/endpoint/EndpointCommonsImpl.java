@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.NonNull;
 import me.pagar.PagarMeService;
 import me.pagar.converter.ObjectConverter;
@@ -32,11 +30,9 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		this.clazz = clazz;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList<T> find(@NonNull String path, Model request) throws HttpException, IOException, ParserException{
-		String url = PagarMeService.getEndpoint() + "/" + path;
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String,Object> parameters = (Map<String, Object>)mapper.convertValue(request, Map.class);
+	public ArrayList<T> find(Model request) throws HttpException, IOException, ParserException{
+		String url = PagarMeService.getEndpoint() + "/" + request.getModelPath();
+		Map<String,Object> parameters = converter.objectToMap(request);
 		HttpResponse response = null;
 		try {
 			response = this.client.get(url, parameters, null, null);
@@ -53,12 +49,15 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		return objects;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList<T> findAllThrough(@NonNull String path, @NonNull Model request, @NonNull String path2, RequestObject request2) throws ParserException, HttpException, IOException{
-		@NonNull String requestId = request.getId();
-		String url = PagarMeService.getEndpoint() + "/" + path + "/" + requestId + "/" + path2;
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String,Object> parameters = (Map<String, Object>)mapper.convertValue(request2, Map.class);
+	public ArrayList<T> findAllThrough(@NonNull Model[] request, RequestObject request2) throws ParserException, HttpException, IOException{
+		String url = PagarMeService.getEndpoint();
+		for (Model model : request) {
+			@NonNull String requestId = model.getId();
+			url += "/" + model.getModelPath() + "/" + requestId;
+		}
+		url += "/" + request2.getModelPath();
+		
+		Map<String,Object> parameters = converter.objectToMap(request2);
 		HttpResponse response = null;
 		try {
 			response = this.client.get(url, parameters, null, null);
@@ -74,9 +73,9 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		return objects;
 	}
 	
-	public T save(@NonNull String path, @NonNull RequestObject request) throws HttpException, IOException, ParserException {
+	public T save(@NonNull RequestObject request) throws HttpException, IOException, ParserException {
 		
-		String url = PagarMeService.getEndpoint() + "/" + path;
+		String url = PagarMeService.getEndpoint() + "/" + request.getModelPath();
 		Map<String,Object> parameters = converter.objectToMap(request);
 		HttpResponse response = null;
 		try {
@@ -97,4 +96,29 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		String responseJsonBody = response.getBody();
 		return converter.jsonToObject(responseJsonBody, clazz);
 	}
+	
+	public T doSomething(RequestObject request, @NonNull String verb) throws HttpException, IOException, ParserException {
+		
+		String url = PagarMeService.getEndpoint() + "/" + request.getModelPath();
+		String requestId = request.getId();
+		if(requestId != null){
+			url += "/" + requestId;
+		}
+		url += "/" + verb;
+		Map<String,Object> parameters = converter.objectToMap(request);
+		HttpResponse response = null;
+		try {
+			response = this.client.post(url, parameters, null, "application/json");
+		} catch (HttpException e) {
+			logger.logError("HttpException. SAVE " + url + ". Parameters: " + parameters, null);
+			throw e;
+		} catch (IOException e) {
+			logger.logError("IOException. SAVE " + url + ". Parameters: " + parameters, null);
+			throw e;
+		}
+		
+		String responseJsonBody = response.getBody();
+		return converter.jsonToObject(responseJsonBody, clazz);
+	}
+
 }

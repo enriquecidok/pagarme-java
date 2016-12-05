@@ -123,7 +123,6 @@ public class DefaultHttpClient implements HttpClient {
 			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
 		}
 		if (!response.isSuccessful()) {
-			System.out.println(response.body().toString());
 	    	throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
 		}
 

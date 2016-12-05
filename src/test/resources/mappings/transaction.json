@@ -1,0 +1,18 @@
+{
+    "request" : {
+        "urlPattern" : "/1/transactions.*",
+        "method" : "POST",
+        "bodyPatterns" : [
+            {"matchesJsonPath": "$.api_key"},
+            {"matchesJsonPath": "$.payment_method"},
+            {"matchesJsonPath": "$.amount"}
+        ]
+    },
+    "response" : {
+        "status" : 200,
+        "bodyFileName" : "/1/transaction.json",
+        "headers" : {
+            "Content-Type" : "application/json"
+        }
+    }
+}
