@@ -20,13 +20,17 @@ public abstract class BankAccount extends PagarmeObject {
 	private String legalName;
 	private Boolean chargeTransferFees;
 	
-	public String getModelPath() {
+	public String getModelNamePlural() {
 		return "bank_account";
 	}
 	
 	@Override
 	public String getId() {
 		return super.getId();
+	}
+
+	public String getModelNameSingular() {
+		return "bank_account";
 	}
 
 }

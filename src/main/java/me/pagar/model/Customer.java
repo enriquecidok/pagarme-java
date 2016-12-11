@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Customer extends PagarmeObject {
+public class Customer extends PagarmeObject {
 
 	private String documentNumber;
 	private String name;
@@ -17,8 +17,11 @@ public abstract class Customer extends PagarmeObject {
 	private Address address;
 	private Phone phone;
 	
-	public String getModelPath() {
+	public String getModelNamePlural() {
 		return "customers";
 	}
-	
+
+	public String getModelNameSingular() {
+		return "customer";
+	}
 }

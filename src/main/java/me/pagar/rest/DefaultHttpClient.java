@@ -45,9 +45,9 @@ public class DefaultHttpClient implements HttpClient {
 			url += "?" + toQueryParams(parameters);
 		}
 		Request request = new Request.Builder()
-		    .url(url)
-		    .headers(requestHeaders)
-		    .build();
+			.url(url)
+			.headers(requestHeaders)
+			.build();
 		
 		Response response = null;
 		try{
@@ -55,12 +55,12 @@ public class DefaultHttpClient implements HttpClient {
 		}catch(IOException e){
 			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
 		}
-	    
-	    if (!response.isSuccessful()) {
-	    	logger.logError("GET " + url + ". Http code: " + response.code(), null);
-	    	throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
-	    }
-	    	
+		
+		if (!response.isSuccessful()) {
+			logger.logError("GET " + url + ". Http code: " + response.code(), null);
+			throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
+		}
+			
 		return new DefaultHttpResponse(response);
 	}
 
@@ -79,10 +79,10 @@ public class DefaultHttpClient implements HttpClient {
 		RequestBody body = RequestBody.create(paramsType, params);
 		
 		Request request = new Request.Builder()
-		    .url(url)
-		    .put(body)
-		    .headers(requestHeaders)
-		    .build();
+		.url(url)
+		.put(body)
+		.headers(requestHeaders)
+		.build();
 
 		Response response = null;
 		try{
@@ -91,8 +91,8 @@ public class DefaultHttpClient implements HttpClient {
 			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
 		}
 		if (!response.isSuccessful()) 
-	    	throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
-	    	
+			throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
+			
 		return new DefaultHttpResponse(response);
 	}
 
@@ -111,10 +111,10 @@ public class DefaultHttpClient implements HttpClient {
 		RequestBody body = RequestBody.create(paramsType, params);
 		
 		Request request = new Request.Builder()
-		    .url(url)
-		    .post(body)
-		    .headers(requestHeaders)
-		    .build();
+			.url(url)
+			.post(body)
+			.headers(requestHeaders)
+			.build();
 
 		Response response = null;
 		try{
@@ -123,7 +123,7 @@ public class DefaultHttpClient implements HttpClient {
 			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
 		}
 		if (!response.isSuccessful()) {
-	    	throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
+			throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
 		}
 
 		return new DefaultHttpResponse(response);

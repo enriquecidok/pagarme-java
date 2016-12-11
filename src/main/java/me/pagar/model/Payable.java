@@ -1,7 +1,6 @@
 package me.pagar.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,8 +18,11 @@ public abstract class Payable extends PagarmeObject {
 	private String paymentDate;
 	private String type;
 	
-	public String getModelPath() {
+	public String getModelNamePlural() {
 		return "payables";
 	}
-	
+
+	public String getModelNameSingular() {
+		return "payable";
+	}
 }

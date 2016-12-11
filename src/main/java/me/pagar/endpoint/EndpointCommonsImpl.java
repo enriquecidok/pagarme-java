@@ -2,6 +2,7 @@ package me.pagar.endpoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.NonNull;
@@ -30,9 +31,16 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		this.clazz = clazz;
 	}
 	
-	public ArrayList<T> find(Model request) throws HttpException, IOException, ParserException{
-		String url = PagarMeService.getEndpoint() + "/" + request.getModelPath();
-		Map<String,Object> parameters = converter.objectToMap(request);
+	public ArrayList<T> findAll(Model request) throws HttpException, IOException, ParserException{
+		//Workaround para quando for passado o id no request e o path não ficar /model/:id
+		String id = request.getId();
+		request.setId(null);
+		String url = buildPathWithModels(new Model[]{request}, "");
+		Map<String,Object> parameters = buildParametersWithModels(request, new HashMap<String, String>(), false);
+		if(id != null){
+			parameters.put("id", id);
+		}
+
 		HttpResponse response = null;
 		try {
 			response = this.client.get(url, parameters, null, null);
@@ -49,15 +57,10 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		return objects;
 	}
 	
-	public ArrayList<T> findAllThrough(@NonNull Model[] request, RequestObject request2) throws ParserException, HttpException, IOException{
-		String url = PagarMeService.getEndpoint();
-		for (Model model : request) {
-			@NonNull String requestId = model.getId();
-			url += "/" + model.getModelPath() + "/" + requestId;
-		}
-		url += "/" + request2.getModelPath();
+	public ArrayList<T> findAllThrough(@NonNull Model[] models, Model request) throws ParserException, HttpException, IOException{
+		String url = buildPathWithModels(models, "");
 		
-		Map<String,Object> parameters = converter.objectToMap(request2);
+		Map<String,Object> parameters = buildParametersWithModels(request, new HashMap<String, String>(), false);
 		HttpResponse response = null;
 		try {
 			response = this.client.get(url, parameters, null, null);
@@ -74,9 +77,8 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 	}
 	
 	public T save(@NonNull RequestObject request) throws HttpException, IOException, ParserException {
-		
-		String url = PagarMeService.getEndpoint() + "/" + request.getModelPath();
-		Map<String,Object> parameters = converter.objectToMap(request);
+		String url = buildPathWithModels(new Model[]{request}, "");
+		Map<String,Object> parameters = buildParametersWithModels(request, new HashMap<String, String>(), false);
 		HttpResponse response = null;
 		try {
 			if(request.existsAtPagarme()){
@@ -85,7 +87,6 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 				response = this.client.post(url, parameters, null, "application/json");
 			}
 		} catch (HttpException e) {
-			System.out.println(e.getResponse().getBody());
 			logger.logError("HttpException. SAVE " + url + ". Parameters: " + parameters, null);
 			throw e;
 		} catch (IOException e) {
@@ -96,19 +97,18 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		String responseJsonBody = response.getBody();
 		return converter.jsonToObject(responseJsonBody, clazz);
 	}
-	
-	public T doSomething(@NonNull Model[] models, @NonNull RequestObject request, @NonNull String verb) throws HttpException, IOException, ParserException {
-		
-		String url = PagarMeService.getEndpoint() + "/" + request.getModelPath();
-		@NonNull String requestId = request.getId();
-		if(requestId != null){
-			url += "/" + requestId;
-		}
-		url += "/" + verb;
-		Map<String,Object> parameters = converter.objectToMap(request);
-		for (@NonNull Model model : models) {
-			parameters.putAll(converter.objectToMap(model));
-		}
+
+	public T doSomething(@NonNull Model[] models, Model request, @NonNull String verb) throws HttpException, IOException, ParserException {
+		return this.doSomething(models, request, false, new HashMap<String, String>(), verb);
+	}
+
+	public T doSomething(@NonNull Model[] models, Model request, boolean wrapRequest, @NonNull String verb) throws HttpException, IOException, ParserException {
+		return this.doSomething(models, request, wrapRequest, new HashMap<String, String>(), verb);
+	}
+
+	public T doSomething(@NonNull Model[] models, Model request, boolean wrapRequest, Map<String, String> customParameters, @NonNull String verb) throws HttpException, IOException, ParserException {
+		String url = buildPathWithModels(models , verb);
+		Map<String,Object> parameters = buildParametersWithModels(request, customParameters, wrapRequest);
 		HttpResponse response = null;
 		try {
 			response = this.client.post(url, parameters, null, "application/json");
@@ -124,4 +124,33 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		return converter.jsonToObject(responseJsonBody, clazz);
 	}
 
+	private String buildPathWithModels(@NonNull Model[] models, String verb){
+		String url = PagarMeService.getEndpoint();
+		for (Model model : models) {
+			String modelId = model.getId();
+			url += "/" + model.getModelNamePlural();
+			if(modelId != null){
+
+				url += "/" + modelId;
+			}
+		}
+		if(verb != null && !verb.trim().isEmpty()){
+			url += "/" + verb;
+		}
+		return url;
+	}
+
+	private Map<String, Object> buildParametersWithModels(Model request, @NonNull Map<String, String> customParameters, boolean wrap){
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.putAll(customParameters);
+		if(request != null){
+			Map<String, Object> requestMap = converter.objectToMap(request);
+			if(wrap){
+				parameters.put(request.getModelNameSingular(), requestMap);
+			}else{
+				parameters.putAll(requestMap);
+			}
+		}
+		return parameters;
+	}
 }

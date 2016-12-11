@@ -11,8 +11,11 @@ public abstract class Card extends PagarmeObject {
 
 	private String holderName;
 	
-	public String getModelPath() {
+	public String getModelNamePlural() {
 		return "cards";
 	}
-	
+
+	public String getModelNameSingular() {
+		return "card";
+	}
 }

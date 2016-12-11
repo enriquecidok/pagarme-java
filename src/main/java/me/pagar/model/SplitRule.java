@@ -32,9 +32,12 @@ public class SplitRule extends PagarmeObject implements ResponseObject, RequestO
 		this.percentage = percentage;
 		this.amount = amount;
 	}
-	
-	public String getModelPath() {
+
+	public String getModelNamePlural() {
 		return "split_rules";
 	}
-	
+
+	public String getModelNameSingular() {
+		return "split_rule";
+	}
 }

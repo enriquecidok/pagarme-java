@@ -23,7 +23,7 @@ public class Customers {
 	}
 	
 	public ArrayList<CustomerResponse> find(Customer customer) throws HttpException, IOException, ParserException{
-		return this.endpointCommons.find(customer);
+		return this.endpointCommons.findAll(customer);
 	}
 	
 }

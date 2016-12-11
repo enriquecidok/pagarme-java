@@ -24,7 +24,7 @@ public class Cards {
 	}
 	
 	public ArrayList<CardResponse> findAll(Card request) throws HttpException, IOException, ParserException {
-		return endpointCommons.find(request);
+		return endpointCommons.findAll(request);
 	}
 	
 	public CardResponse save(CardRequest request) throws HttpException, IOException, ParserException {

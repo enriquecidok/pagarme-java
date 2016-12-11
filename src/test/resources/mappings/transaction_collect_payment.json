@@ -1,6 +1,6 @@
 {
     "request" : {
-        "urlPattern" : "/1/transactions/[^/]+/collect_payment.*",
+        "urlPattern" : "/1/transactions/[0-9]+/collect_payment",
         "method" : "POST",
         "bodyPatterns" : [
             {"matchesJsonPath": "$.api_key"},
@@ -10,6 +10,7 @@
     "response" : {
         "status" : 200,
         "body" : "{}",
+        "bodyFileName" : "/1/transaction.json",
         "headers" : {
             "Content-Type" : "application/json"
         }

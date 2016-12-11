@@ -1,6 +1,6 @@
 {
     "request" : {
-        "urlPattern" : "/1/transactions/[^/]+/refund",
+        "urlPattern" : "/1/transactions/[0-9]+/refund",
         "method" : "POST",
         "bodyPatterns" : [
             {"matchesJsonPath": "$.api_key"}
@@ -8,7 +8,7 @@
     },
     "response" : {
         "status" : 200,
-        "bodyFileName" : "/1/transaction_capture.json",
+        "bodyFileName" : "/1/transaction_refund.json",
         "headers" : {
             "Content-Type" : "application/json"
         }

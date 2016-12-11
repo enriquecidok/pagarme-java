@@ -1,10 +1,13 @@
 package me.pagar.model;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public interface Model {
 
 	public String getId();
+	public void setId(String id);
 	public Boolean existsAtPagarme();
 	
 	/**
@@ -12,5 +15,7 @@ public interface Model {
 	 * @return
 	 */
 	@JsonIgnore
-	public String getModelPath();
+	public String getModelNamePlural();
+	@JsonIgnore
+	public String getModelNameSingular();
 }

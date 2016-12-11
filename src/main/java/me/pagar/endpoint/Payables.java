@@ -29,7 +29,7 @@ public class Payables {
 	}
 	
 	public ArrayList<PayableResponse> findAll(PayableRequest payable) throws HttpException, IOException, ParserException{
-		return this.endpointCommons.find(payable);
+		return this.endpointCommons.findAll(payable);
 	}
 	
 }

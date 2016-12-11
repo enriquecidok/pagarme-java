@@ -24,8 +24,12 @@ public class Address extends PagarmeObject implements RequestObject, ResponseObj
 	private String neighborhood;
 	private String zipcode;
 	
-	public String getModelPath() {
+	public String getModelNamePlural() {
 		return "addresses";
+	}
+
+	public String getModelNameSingular() {
+		return "address";
 	}
 	
 }

@@ -43,8 +43,11 @@ public abstract class Transaction extends PagarmeObject {
 		this.customer = customer;
 	}
 	
-	public String getModelPath() {
+	public String getModelNamePlural() {
 		return "transactions";
 	}
-	
+
+	public String getModelNameSingular() {
+		return "transaction";
+	}
 }

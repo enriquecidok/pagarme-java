@@ -24,7 +24,7 @@ public class Plans {
 	}
 	
 	public ArrayList<PlanResponse> findAll(Plan request) throws HttpException, IOException, ParserException {
-		return endpointCommons.find(request);
+		return endpointCommons.findAll(request);
 	}
 	
 	public PlanResponse save(PlanRequest request) throws HttpException, IOException, ParserException {
