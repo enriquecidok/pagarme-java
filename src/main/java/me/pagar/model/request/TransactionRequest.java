@@ -28,11 +28,10 @@ public class TransactionRequest extends Transaction implements RequestObject {
 	}
 
 	@Builder
-	public TransactionRequest(String id, String object, DateTime dateCreated, DateTime dateUpdated,
-			PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
+	public TransactionRequest(String id, PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
 			DateTime boletoExpirationDate, String softDescriptor, Boolean capture, Metadata metadata,
 			SplitRule[] splitRules, CardRequest card, Customer customer) {
-		super(id, object, dateCreated, dateUpdated, paymentMethod, postbackUrl, amount, async, installments,
+		super(id, paymentMethod, postbackUrl, amount, async, installments,
 				boletoExpirationDate, softDescriptor, capture, metadata, splitRules, card, customer);
 		// TODO Auto-generated constructor stub
 	}

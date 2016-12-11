@@ -1,7 +1,5 @@
 package me.pagar.model;
 
-import org.joda.time.DateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,21 +13,21 @@ public abstract class Plan extends PagarmeObject {
 	private Integer amount;
 	private Integer days;
 	private String name;
-	private Integer trial_days;
-	private PaymentMethod[] payment_methods;
+	private Integer trialDays;
+	private PaymentMethod[] paymentMethods;
 	private String color;
 	private Integer charges;
 	private Integer installments;
 	
-	protected Plan(String id, String object, DateTime dateCreated, DateTime dateUpdated, Integer amount,
-			Integer days, String name, Integer trial_days, PaymentMethod[] payment_methods, String color,
+	protected Plan(String id, Integer amount,
+			Integer days, String name, Integer trialDays, PaymentMethod[] paymentMethods, String color,
 			Integer charges, Integer installments) {
-		super(id, object, dateCreated, dateUpdated);
+		super(id);
 		this.amount = amount;
 		this.days = days;
 		this.name = name;
-		this.trial_days = trial_days;
-		this.payment_methods = payment_methods;
+		this.trialDays = trialDays;
+		this.paymentMethods = paymentMethods;
 		this.color = color;
 		this.charges = charges;
 		this.installments = installments;

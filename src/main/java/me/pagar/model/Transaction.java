@@ -24,11 +24,10 @@ public abstract class Transaction extends PagarmeObject {
 	private CardRequest card;
 	private Customer customer;
 	
-	protected Transaction(String id, String object, DateTime dateCreated, DateTime dateUpdated,
-			PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
+	protected Transaction(String id, PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
 			DateTime boletoExpirationDate, String softDescriptor, Boolean capture, Metadata metadata,
 			SplitRule[] splitRules, CardRequest card, Customer customer) {
-		super(id, object, dateCreated, dateUpdated);
+		super(id);
 		this.paymentMethod = paymentMethod;
 		this.postbackUrl = postbackUrl;
 		this.amount = amount;

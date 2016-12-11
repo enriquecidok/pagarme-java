@@ -33,14 +33,13 @@ public class TransactionResponse extends Transaction implements ResponseObject {
 	private String subscriptionId;
 	
 	@Builder
-	public TransactionResponse(String id, String object, DateTime dateCreated, DateTime dateUpdated,
-			PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
+	public TransactionResponse(String id, PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
 			DateTime boletoExpirationDate, String softDescriptor, Boolean capture, Metadata metadata,
 			SplitRule[] splitRules, CardRequest card, Customer customer, String status, String statusReason,
 			String acquirerName, String acquirerResponseCode, String authorizationCode, String softDescriptor2,
 			String tid, String nsu, String cost, PaymentMethod paymentMethod2, String boletoUrl, String boletoBarcode,
 			String referer, String ip, String subscriptionId) {
-		super(id, object, dateCreated, dateUpdated, paymentMethod, postbackUrl, amount, async, installments,
+		super(id, paymentMethod, postbackUrl, amount, async, installments,
 				boletoExpirationDate, softDescriptor, capture, metadata, splitRules, card, customer);
 		this.status = status;
 		this.statusReason = statusReason;

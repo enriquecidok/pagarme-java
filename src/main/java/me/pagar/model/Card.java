@@ -1,7 +1,5 @@
 package me.pagar.model;
 
-import org.joda.time.DateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +19,8 @@ public abstract class Card extends PagarmeObject {
 		return "card";
 	}
 
-	public Card(String id, String object, DateTime dateCreated, DateTime dateUpdated, String holderName) {
-		super(id, object, dateCreated, dateUpdated);
+	public Card(String id, String object, String holderName) {
+		super(id);
 		this.holderName = holderName;
 	}
 

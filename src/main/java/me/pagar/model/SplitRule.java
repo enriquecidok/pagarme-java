@@ -1,7 +1,5 @@
 package me.pagar.model;
 
-import org.joda.time.DateTime;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +21,9 @@ public class SplitRule extends PagarmeObject implements ResponseObject, RequestO
 	private Integer amount;
 	
 	@Builder
-	public SplitRule(String id, String object, DateTime dateCreated, DateTime dateUpdated, String recipientId,
+	public SplitRule(String id, String object, String recipientId,
 			Boolean chargeProcessingfee, Boolean liable, Integer percentage, Integer amount) {
-		super(id, object, dateCreated, dateUpdated);
+		super(id);
 		this.recipientId = recipientId;
 		this.chargeProcessingfee = chargeProcessingfee;
 		this.liable = liable;

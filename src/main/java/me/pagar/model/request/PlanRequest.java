@@ -18,13 +18,11 @@ public class PlanRequest extends Plan implements RequestObject{
 	private static final long serialVersionUID = -5628607817707420072L;
 
 	@Builder
-	public PlanRequest(String id, String object, DateTime dateCreated, DateTime dateUpdated, Integer amount,
+	public PlanRequest(String id, Integer amount,
 			Integer days, String name, Integer trial_days, PaymentMethod[] payment_methods, String color,
 			Integer charges, Integer installments) {
-		super(id, object, dateCreated, dateUpdated, amount, days, name, trial_days, payment_methods, color, charges,
+		super(id, amount, days, name, trial_days, payment_methods, color, charges,
 				installments);
-		// TODO Auto-generated constructor stub
 	}
 
-	
 }

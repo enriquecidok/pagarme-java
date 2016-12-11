@@ -25,9 +25,9 @@ public class CardRequest extends Card implements RequestObject {
 	private String cvv;
 
 	@Builder
-	public CardRequest(String id, String object, DateTime dateCreated, DateTime dateUpdated, String holderName,
+	public CardRequest(String id, String holderName,
 			String number, DateTime expirationDate, String customerId, String hash, String cvv) {
-		super(id, object, dateCreated, dateUpdated, holderName);
+		super(id);
 		this.number = number;
 		this.expirationDate = expirationDate;
 		this.customerId = customerId;

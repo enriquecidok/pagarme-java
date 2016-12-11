@@ -2,22 +2,27 @@ package me.pagar.model;
 
 import org.joda.time.DateTime;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public abstract class PagarmeObject implements Model{
 	
-	private String id;
-	private String object;
-	private DateTime dateCreated;
-	private DateTime dateUpdated;
+	@Getter @Setter private String id;
+	@Getter private String object;
+	@Getter private DateTime dateCreated;
+	@Getter private DateTime dateUpdated;
 	
 	public Boolean existsAtPagarme(){
 		return this.getId() != null && !this.getId().isEmpty();
 	}
-	 
+
+	public PagarmeObject(String id) {
+		super();
+		this.id = id;
+	}
+
 }

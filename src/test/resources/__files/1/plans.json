@@ -1,0 +1,17 @@
+[
+    {
+        "object": "plan",
+        "id": 12779,
+        "amount": 31000,
+        "days": 30,
+        "name": "Plano Ouro",
+        "trial_days": 0,
+        "date_created": "2015-03-03T16:28:00.000Z",
+        "payment_methods": [
+            "boleto"
+        ],
+        "color": null,
+        "charges": null,
+        "installments": 1
+    }
+]

@@ -1,0 +1,19 @@
+{
+    "request" : {
+      "method" : "POST",
+      "urlPattern" : "/1/plans",
+      "bodyPatterns": [
+            {"matchesJsonPath": "$.api_key"},
+            {"matchesJsonPath": "$.amount"},
+            {"matchesJsonPath": "$.days"},
+            {"matchesJsonPath": "$.name"}
+      ]
+    },
+    "response" : {
+      "status" : 200,
+      "bodyFileName" : "/1/plan.json",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    }
+}

@@ -11,10 +11,10 @@ import me.pagar.model.Plan;
 public class PlanResponse extends Plan implements ResponseObject {
 	
 	@Builder
-	public PlanResponse(String id, String object, DateTime dateCreated, DateTime dateUpdated, Integer amount,
+	public PlanResponse(String id, Integer amount,
 			Integer days, String name, Integer trial_days, PaymentMethod[] payment_methods, String color,
 			Integer charges, Integer installments) {
-		super(id, object, dateCreated, dateUpdated, amount, days, name, trial_days, payment_methods, color, charges,
+		super(id, amount, days, name, trial_days, payment_methods, color, charges,
 				installments);
 	}
 

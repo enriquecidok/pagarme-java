@@ -1,0 +1,18 @@
+{
+    "request" : {
+      "method" : "GET",
+      "urlPattern" : "/1/plans.*",
+      "queryParameters" : {
+        "api_key" : {
+          "matches" : ".+"
+        }
+      }
+    },
+    "response" : {
+      "status" : 200,
+      "bodyFileName" : "/1/plans.json",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    }
+}
