@@ -77,8 +77,14 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 	}
 	
 	public T save(@NonNull RequestObject request) throws HttpException, IOException, ParserException {
+		//Workaround para quando for passado o id no request e o path não ficar /model/:id
+		String id = request.getId();
+		request.setId(null);
 		String url = buildPathWithModels(new Model[]{request}, "");
 		Map<String,Object> parameters = buildParametersWithModels(request, new HashMap<String, String>(), false);
+		if(id != null){
+			parameters.put("id", id);
+		}
 		HttpResponse response = null;
 		try {
 			if(request.existsAtPagarme()){

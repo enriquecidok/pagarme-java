@@ -1,0 +1,19 @@
+{
+    "request" : {
+        "method" : "POST",
+        "urlPattern" : "/1/cards",
+        "bodyPatterns" : [
+            {"matchesJsonPath": "$.api_key"},
+            {"matchesJsonPath": "$.number"},
+            {"matchesJsonPath": "$.holder_name"},
+            {"matchesJsonPath": "$.expiration_date"}
+        ]
+    },
+    "response" : {
+          "status" : 200,
+          "bodyFileName" : "/1/card.json",
+          "headers" : {
+              "Content-Type" : "application/json"
+          }
+    }
+}
