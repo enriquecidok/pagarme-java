@@ -1,0 +1,18 @@
+{
+    "request" : {
+      "method" : "GET",
+      "urlPattern" : "/1/customers.*",
+      "queryParameters" : {
+        "api_key" : {
+          "matches" : ".+"
+        }
+      }
+    },
+    "response" : {
+      "status" : 200,
+      "bodyFileName" : "/1/customers.json",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    }
+}

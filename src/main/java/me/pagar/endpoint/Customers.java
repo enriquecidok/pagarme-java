@@ -9,6 +9,7 @@ import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
 import me.pagar.model.Customer;
+import me.pagar.model.request.CustomerRequest;
 import me.pagar.model.response.CustomerResponse;
 import me.pagar.rest.HttpClient;
 import me.pagar.rest.HttpException;
@@ -22,8 +23,11 @@ public class Customers {
 		this.endpointCommons = new EndpointCommonsImpl<CustomerResponse>(client, logger, converter, CustomerResponse.class);
 	}
 	
-	public ArrayList<CustomerResponse> find(Customer customer) throws HttpException, IOException, ParserException{
+	public ArrayList<CustomerResponse> findAll(Customer customer) throws HttpException, IOException, ParserException{
 		return this.endpointCommons.findAll(customer);
 	}
-	
+
+	public CustomerResponse save(CustomerRequest customer) throws HttpException, IOException, ParserException{
+		return this.endpointCommons.save(customer);
+	}
 }

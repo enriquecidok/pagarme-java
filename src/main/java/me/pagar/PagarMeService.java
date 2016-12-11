@@ -6,6 +6,7 @@ import com.google.inject.Injector;
 import me.pagar.dependencyInjection.ListenersModule;
 import me.pagar.dependencyInjection.RestClientModule;
 import me.pagar.endpoint.Cards;
+import me.pagar.endpoint.Customers;
 import me.pagar.endpoint.Transactions;
 
 public class PagarMeService {
@@ -17,12 +18,13 @@ public class PagarMeService {
 	
 	public final static Transactions transactions;
 	public final static Cards cards;
+	public final static Customers customers;
 	
 	static{
 		Injector injector = Guice.createInjector(new ListenersModule(), new RestClientModule());
 		transactions = injector.getInstance(Transactions.class);
 		cards = injector.getInstance(Cards.class);
-		
+		customers = injector.getInstance(Customers.class);
 	}
 	
 	public static void init(String apiKey, String encryptionKey){
