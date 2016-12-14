@@ -1,28 +1,36 @@
 package me.pagar.model;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.pagar.enumeration.JsonFieldConvertable;
+import me.pagar.enumeration.PayableStatus;
+import me.pagar.enumeration.PayableType;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class Payable extends PagarmeObject {
 
-	private String status;
-	private String amount;
-	private String fee;
-	private String installment;
+	private PayableStatus status;
+	private Integer amount;
+	private Integer fee;
+	private Integer installment;
 	private String transactionId;
 	private String splitRuleId;
-	private String paymentDate;
-	private String type;
+	private DateTime paymentDate;
+	private PayableType type;
+
 	
-	public String getModelNamePlural() {
+	public final String getModelNamePlural() {
 		return "payables";
 	}
 
-	public String getModelNameSingular() {
+	public final String getModelNameSingular() {
 		return "payable";
 	}
 }

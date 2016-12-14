@@ -1,11 +1,9 @@
 package me.pagar.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
 public abstract class Card extends PagarmeObject {
 
@@ -19,9 +17,7 @@ public abstract class Card extends PagarmeObject {
 		return "card";
 	}
 
-	public Card(String id, String object, String holderName) {
-		super(id);
+	protected void setHolderName(String holderName) {
 		this.holderName = holderName;
 	}
-
 }

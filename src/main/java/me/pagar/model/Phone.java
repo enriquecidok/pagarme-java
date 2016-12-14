@@ -1,16 +1,12 @@
 package me.pagar.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import me.pagar.model.request.RequestObject;
 import me.pagar.model.response.ResponseObject;
 
-@Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Phone extends PagarmeObject implements RequestObject, ResponseObject{
 
 	/**

@@ -11,6 +11,8 @@ import me.pagar.converter.ObjectConverter;
 import me.pagar.converter.ParserException;
 import me.pagar.logging.Logger;
 import me.pagar.model.Model;
+import me.pagar.model.PagarmeRelatable;
+import me.pagar.model.queriablefields.QueriableFields;
 import me.pagar.model.request.RequestObject;
 import me.pagar.model.response.ResponseObject;
 import me.pagar.rest.HttpClient;
@@ -56,7 +58,27 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		ArrayList<T> objects = converter.jsonToObjects(response.getBody(), clazz);
 		return objects;
 	}
-	
+
+	public ArrayList<T> findAll(QueriableFields query) throws HttpException, IOException, ParserException{
+		//Workaround para quando for passado o id no request e o path não ficar /model/:id
+		Map<String, Object> parameters = query.toMap();
+		String url = buildPathWithModels(new PagarmeRelatable[]{query}, "");
+		HttpResponse response = null;
+		try {
+			response = this.client.get(url, parameters, null, null);
+		} catch (HttpException e) {
+			logger.logError("HttpException. FIND " + url, null);
+			throw e;
+		} catch (IOException e) {
+			logger.logError("IOException. FIND " + url, null);
+			throw e;
+		}
+		
+		
+		ArrayList<T> objects = converter.jsonToObjects(response.getBody(), clazz);
+		return objects;
+	}
+
 	public ArrayList<T> findAllThrough(@NonNull Model[] models, Model request) throws ParserException, HttpException, IOException{
 		String url = buildPathWithModels(models, "");
 		
@@ -130,9 +152,9 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		return converter.jsonToObject(responseJsonBody, clazz);
 	}
 
-	private String buildPathWithModels(@NonNull Model[] models, String verb){
+	private String buildPathWithModels(@NonNull PagarmeRelatable[] models, String verb){
 		String url = PagarMeService.getEndpoint();
-		for (Model model : models) {
+		for (PagarmeRelatable model : models) {
 			String modelId = model.getId();
 			url += "/" + model.getModelNamePlural();
 			if(modelId != null){

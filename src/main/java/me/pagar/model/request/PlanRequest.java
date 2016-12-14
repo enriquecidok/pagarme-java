@@ -1,15 +1,11 @@
 package me.pagar.model.request;
 
-import org.joda.time.DateTime;
-
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.Plan;
 
-@Data
-@NoArgsConstructor
+@Getter
 public class PlanRequest extends Plan implements RequestObject{
 
 	/**

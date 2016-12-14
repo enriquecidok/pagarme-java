@@ -19,4 +19,5 @@ public interface ObjectConverter {
 	public <T extends RequestObject> String objectsToJson(Collection<T> object) throws ParserException;
 	
 	public Map<String, Object> objectToMap(Object object);
+	
 }

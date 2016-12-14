@@ -4,13 +4,10 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import me.pagar.model.Card;
 
-@Data
-@NoArgsConstructor
+@Getter
 public class CardRequest extends Card implements RequestObject {
 
 	/**
@@ -24,15 +21,22 @@ public class CardRequest extends Card implements RequestObject {
 	private String hash;
 	private String cvv;
 
-	@Builder
-	public CardRequest(String id, String holderName,
-			String number, DateTime expirationDate, String customerId, String hash, String cvv) {
-		super(id);
+	public CardRequest(String holderName, String number, DateTime expirationDate, String customerId, String cvv) {
+		super();
 		this.number = number;
 		this.expirationDate = expirationDate;
 		this.customerId = customerId;
+		this.cvv = cvv;
+		setHolderName(holderName);
+	}
+
+	public CardRequest(String hash, String cvv){
+		super();
 		this.hash = hash;
 		this.cvv = cvv;
 	}
 
+	public CardRequest(String id) {
+		setId(id);
+	}
 }
