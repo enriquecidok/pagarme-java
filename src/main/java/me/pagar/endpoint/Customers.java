@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.exception.ParserException;
 import me.pagar.exception.RequestException;
+import me.pagar.model.queriablefields.CustomerQueriableFields;
 import me.pagar.model.queriablefields.QueriableFields;
 import me.pagar.model.request.CustomerRequest;
 import me.pagar.model.response.CustomerResponse;
@@ -21,7 +22,7 @@ public class Customers {
 		this.endpointCommons = new EndpointCommonsImpl<CustomerResponse>(client, converter, CustomerResponse.class);
 	}
 	
-	public ArrayList<CustomerResponse> findAll(QueriableFields customer) throws ParserException, RequestException{
+	public ArrayList<CustomerResponse> findAll(CustomerQueriableFields customer) throws ParserException, RequestException{
 		return this.endpointCommons.findAll(customer);
 	}
 

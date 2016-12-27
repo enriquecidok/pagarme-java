@@ -2,6 +2,8 @@ package me.pagar.model.queriablefields;
 
 import java.util.HashMap;
 
+import org.joda.time.DateTime;
+
 import me.pagar.model.request.RequestObject;
 
 /**
@@ -17,20 +19,32 @@ public abstract class QueriableFields implements RequestObject{
 	private static final long serialVersionUID = -6280951188027930849L;
 	private HashMap<String, String> filter = new HashMap<String, String>();
 
-	public <T> void lessOrEquals(RangeQueriable<T> field, T value){
+	protected <T> void lessOrEquals(RangeQueriable<T> field, T value){
 		filter.put(field.getKey(), "<=" + field.getFormattedString(value));
 	}
 
-	public <T> void greaterOrEquals(RangeQueriable<T> field, T value){
+	protected <T> void greaterOrEquals(RangeQueriable<T> field, T value){
 		filter.put(field.getKey(), ">=" + field.getFormattedString(value));
 	}
 
-	public <T> void equals(EqualityQueriable<T> field, T value){
+	protected <T> void equals(EqualityQueriable<T> field, T value){
 		filter.put(field.getKey(), field.getFormattedString(value));
 	}
 
-	public <T> void notEqual(EqualityQueriable<T> field, T value){
+	protected <T> void notEqual(EqualityQueriable<T> field, T value){
 		filter.put(field.getKey(), "!=" + field.getFormattedString(value));
+	}
+
+	public void setId(String id) {
+		equals(new StringQueriableField("id"), id);
+	}
+
+	public void setDateCreatedBefore(DateTime date){
+		lessOrEquals(new DateTimeIsodateQueriableField("date_created"), date);
+	}
+
+	public void setDateCreatedAfter(DateTime date){
+		greaterOrEquals(new DateTimeIsodateQueriableField("date_created"), date);
 	}
 
 	public String getId(){

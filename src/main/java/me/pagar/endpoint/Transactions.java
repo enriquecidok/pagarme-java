@@ -13,6 +13,7 @@ import me.pagar.exception.ParserException;
 import me.pagar.exception.RequestException;
 import me.pagar.model.Model;
 import me.pagar.model.queriablefields.QueriableFields;
+import me.pagar.model.queriablefields.TransactionQueriableFields;
 import me.pagar.model.request.BankAccountRequest;
 import me.pagar.model.request.TransactionRequest;
 import me.pagar.model.response.BankAccountResponse;
@@ -29,7 +30,7 @@ public class Transactions {
 		this.endpointCommons = new EndpointCommonsImpl<TransactionResponse>(client, converter, TransactionResponse.class);
 	}
 	
-	public ArrayList<TransactionResponse> findAll(QueriableFields request) throws ParserException, RequestException {
+	public ArrayList<TransactionResponse> findAll(TransactionQueriableFields request) throws ParserException, RequestException {
 		return endpointCommons.findAll(request);
 	}
 	
