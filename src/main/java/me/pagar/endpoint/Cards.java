@@ -1,33 +1,31 @@
 package me.pagar.endpoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.google.inject.Inject;
 
 import me.pagar.converter.ObjectConverter;
-import me.pagar.converter.ParserException;
-import me.pagar.logging.Logger;
-import me.pagar.model.Card;
+import me.pagar.exception.ParserException;
+import me.pagar.exception.RequestException;
+import me.pagar.model.queriablefields.QueriableFields;
 import me.pagar.model.request.CardRequest;
 import me.pagar.model.response.CardResponse;
 import me.pagar.rest.HttpClient;
-import me.pagar.rest.HttpException;
 
 public class Cards {
 
 	private EndpointCommonsImpl<CardResponse> endpointCommons;
 	
 	@Inject
-	private Cards(HttpClient client, Logger logger, ObjectConverter converter) {
-		this.endpointCommons = new EndpointCommonsImpl<CardResponse>(client, logger, converter, CardResponse.class);
+	private Cards(HttpClient client, ObjectConverter converter) {
+		this.endpointCommons = new EndpointCommonsImpl<CardResponse>(client, converter, CardResponse.class);
 	}
 	
-	public ArrayList<CardResponse> findAll(Card request) throws HttpException, IOException, ParserException {
+	public ArrayList<CardResponse> findAll(QueriableFields request) throws ParserException, RequestException {
 		return endpointCommons.findAll(request);
 	}
 	
-	public CardResponse save(CardRequest request) throws HttpException, IOException, ParserException {
+	public CardResponse save(CardRequest request) throws ParserException, RequestException {
 		return this.endpointCommons.save(request);
 	}
 	

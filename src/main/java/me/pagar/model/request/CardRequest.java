@@ -5,10 +5,12 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
-import me.pagar.model.Card;
+import lombok.NonNull;
+import lombok.Setter;
+import me.pagar.model.PagarmeObject;
 
 @Getter
-public class CardRequest extends Card implements RequestObject {
+public class CardRequest extends PagarmeObject implements RequestObject {
 
 	/**
 	 * 
@@ -17,26 +19,38 @@ public class CardRequest extends Card implements RequestObject {
 	private String number;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMyy")
 	private DateTime expirationDate;
-	private String customerId;
+	@Setter private String customerId;
 	private String hash;
 	private String cvv;
+	private String holderName;
 
-	public CardRequest(String holderName, String number, DateTime expirationDate, String customerId, String cvv) {
-		super();
+	public CardRequest(@NonNull String holderName, @NonNull String number, @NonNull DateTime expirationDate, @NonNull String cvv) {
 		this.number = number;
 		this.expirationDate = expirationDate;
-		this.customerId = customerId;
 		this.cvv = cvv;
-		setHolderName(holderName);
+		this.holderName = holderName;
 	}
 
-	public CardRequest(String hash, String cvv){
-		super();
+	/**
+	 * Either the id or the cardhash may be null, but not both
+	 * @param cardHash
+	 * @param id
+	 */
+	public CardRequest(String cardHash, String id){
+		super(id);
+		this.hash = cardHash;
+	}
+
+	public void setCreationParameters(String hash, String cvv){
 		this.hash = hash;
 		this.cvv = cvv;
 	}
 
-	public CardRequest(String id) {
-		setId(id);
+	public String getModelNamePlural() {
+		return "cards";
+	}
+
+	public String getModelNameSingular() {
+		return "card";
 	}
 }

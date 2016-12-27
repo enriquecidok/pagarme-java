@@ -1,18 +1,17 @@
 package tests.integration.endpoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
 import me.pagar.PagarMeService;
-import me.pagar.converter.ParserException;
 import me.pagar.enumeration.PaymentMethod;
+import me.pagar.exception.ParserException;
+import me.pagar.exception.RequestException;
+import me.pagar.model.queriablefields.TransactionQueriableFields;
 import me.pagar.model.request.TransactionRequest;
 import me.pagar.model.response.TransactionResponse;
-import me.pagar.rest.HttpException;
 import tests.factory.TransactionFactory;
 
 public class TransactionEndpointTests {
@@ -21,22 +20,24 @@ public class TransactionEndpointTests {
 	
 	public TransactionEndpointTests() {
 		transactionFactory = new TransactionFactory();
+		PagarMeService.init("ak_test_zXjKL8u5uxn25HNxHviPbhthNV0nL7", "");
 	}
 	
 	@Test
-	public void testFindTransactionCollection() throws HttpException, IOException, ParserException{
-		TransactionRequest transactionFilter = new TransactionRequest();
-		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.findAll(transactionFilter);
+	public void testFindTransactionCollection() throws ParserException, RequestException{
+		TransactionQueriableFields query = new TransactionQueriableFields();
+		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.findAll(query);
 		Assert.assertTrue(foundTransactions.size() > 1);
 	}
 	
 	@Test
-	public void testSaveTransaction() throws HttpException, IOException, ParserException{
-		TransactionRequest newTransactionParameters = transactionFactory.create(PaymentMethod.CREDIT_CARD, DateTime.now());
+	public void testSaveTransaction() throws ParserException, RequestException{
+		TransactionRequest newTransactionParameters = transactionFactory.create(PaymentMethod.CREDIT_CARD);
 		TransactionResponse newTransaction = PagarMeService.transactions.save(newTransactionParameters);
 		
-		TransactionRequest foundTransactionRequest = TransactionRequest.builder().id(newTransaction.getId()).build();
-		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.findAll(foundTransactionRequest);
+		TransactionQueriableFields query = new TransactionQueriableFields();
+		query.setId(newTransaction.getId());
+		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.findAll(query);
 		Assert.assertTrue(foundTransactions.size() == 1);
 	}
 }

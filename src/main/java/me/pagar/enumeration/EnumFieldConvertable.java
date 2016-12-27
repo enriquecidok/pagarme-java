@@ -1,6 +1,6 @@
 package me.pagar.enumeration;
 
-public interface JsonFieldConvertable {
+public interface EnumFieldConvertable {
 
 	public String getField();
 }

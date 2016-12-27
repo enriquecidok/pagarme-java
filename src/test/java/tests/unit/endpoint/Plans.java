@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import me.pagar.PagarMeService;
-import me.pagar.converter.ParserException;
+import me.pagar.exception.ParserException;
 import me.pagar.model.request.PlanRequest;
 import me.pagar.model.response.PlanResponse;
 import me.pagar.rest.HttpException;

@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import me.pagar.PagarMeService;
-import me.pagar.converter.ParserException;
+import me.pagar.exception.ParserException;
 import me.pagar.model.request.CardRequest;
 import me.pagar.model.response.CardResponse;
 import me.pagar.rest.HttpException;

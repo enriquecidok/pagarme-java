@@ -6,17 +6,14 @@ import me.pagar.model.request.PlanRequest;
 public class PlanFactory {
 
 	public PlanRequest create(){
-		return PlanRequest.builder()
-				.amount(1000)
-				.charges(2)
-				.days(3)
-				.id("123")
-				.installments(2)
-				.name("Plano teste")
-				.payment_methods(new PaymentMethod[]{
-						PaymentMethod.BOLETO, PaymentMethod.CREDIT_CARD
-				})
-				.trial_days(2)
-				.build();
+		PlanRequest plan = new PlanRequest(10000, 3, "Plano teste");
+		plan.setCharges(2);
+		plan.setColor("#bababa");
+		plan.setInstallments(2);
+		plan.setPaymentMethods(new PaymentMethod[]{
+			PaymentMethod.BOLETO, PaymentMethod.CREDIT_CARD
+		});
+		plan.setTrialDays(10);
+		return plan;
 	}
 }

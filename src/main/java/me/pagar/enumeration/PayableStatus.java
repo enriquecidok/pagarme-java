@@ -2,7 +2,7 @@ package me.pagar.enumeration;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum PayableStatus implements JsonFieldConvertable{
+public enum PayableStatus implements EnumFieldConvertable{
 
 	WAITING_FUNDS("waiting_funds"), PAID("paid");
 
@@ -18,7 +18,7 @@ public enum PayableStatus implements JsonFieldConvertable{
 	}
 
 	public String getField() {
-		return this.name().toLowerCase();
+		return "status";
 	}
 
 }

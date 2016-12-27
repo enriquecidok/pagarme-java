@@ -1,25 +1,45 @@
 package me.pagar.model.request;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import me.pagar.enumeration.DocumentType;
-import me.pagar.model.BankAccount;
+import lombok.Getter;
+import lombok.NonNull;
+import me.pagar.enumeration.BankAccountType;
+import me.pagar.model.PagarmeObject;
 
-@Data
-@NoArgsConstructor
-public class BankAccountRequest extends BankAccount implements RequestObject{
+@Getter
+public class BankAccountRequest extends PagarmeObject implements RequestObject{
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5862666574107498806L;
+	private static final long serialVersionUID = 1417686153781706723L;
 
-	@Builder
-	public BankAccountRequest(String bankCode, String agencia, String agenciaDv, String conta, String contaDv,
-			DocumentType documentType, String documentNumber, String legalName, Boolean chargeTransferFees) {
-		super(bankCode, agencia, agenciaDv, conta, contaDv, documentType, documentNumber, legalName, chargeTransferFees);
+	private String bankCode;
+	private String agencia;
+	private String agenciaDv;
+	private String conta;
+	private String contaDv;
+	private BankAccountType type;
+	private String documentNumber;
+	private String legalName;
+	private Boolean chargeTransferFees;
+
+	public BankAccountRequest(@NonNull String bankCode, @NonNull String agencia, @NonNull String agenciaDv, @NonNull String conta, @NonNull String contaDv, @NonNull String document, @NonNull String legalName, @NonNull Boolean chargesTransferFees) {
+		this.bankCode = bankCode;
+		this.agencia = agencia;
+		this.agenciaDv = agenciaDv;
+		this.conta = conta;
+		this.contaDv = contaDv;
+		this.documentNumber = document;
+		this.legalName = legalName;
+		this.chargeTransferFees = chargesTransferFees;
 	}
 
-	
+	public String getModelNamePlural() {
+		return "bank_account";
+	}
+
+	public String getModelNameSingular() {
+		return "bank_account";
+	}
+
 }

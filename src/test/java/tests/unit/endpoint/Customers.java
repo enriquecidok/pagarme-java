@@ -14,7 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import me.pagar.PagarMeService;
-import me.pagar.converter.ParserException;
+import me.pagar.exception.ParserException;
+import me.pagar.exception.RequestException;
 import me.pagar.model.request.CustomerRequest;
 import me.pagar.model.response.CustomerResponse;
 import me.pagar.rest.HttpException;
@@ -41,7 +42,7 @@ public class Customers extends UnitTest {
 	}
 
 	@Test
-	public void testCustomerCreation() throws HttpException, IOException, ParserException{
+	public void testCustomerCreation() throws HttpException, IOException, ParserException, RequestException{
 		CustomerRequest customer = customerFactory.create();
 		CustomerResponse createdCustomer = PagarMeService.customers.save(customer);
 		verify(postRequestedFor(urlMatching("/1/customers"))

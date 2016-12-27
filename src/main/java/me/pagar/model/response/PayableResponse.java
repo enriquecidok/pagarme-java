@@ -2,14 +2,31 @@ package me.pagar.model.response;
 
 import org.joda.time.DateTime;
 
-import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import me.pagar.enumeration.PayableStatus;
 import me.pagar.enumeration.PayableType;
-import me.pagar.model.Payable;
 
-@NoArgsConstructor
-public class PayableResponse extends Payable implements ResponseObject{
-	public PayableResponse(PayableStatus status, Integer amount, Integer fee, Integer installment, String transactionId, String splitRuleId, DateTime paymentDate, PayableType type) {
-		super(status, amount, fee, installment, transactionId, splitRuleId, paymentDate, type);
+@Getter
+@Setter(AccessLevel.PROTECTED)
+public class PayableResponse extends ResponseObjectImpl implements ResponseObject{
+
+	private PayableStatus status;
+	private Integer amount;
+	private Integer fee;
+	private Integer installment;
+	private String transactionId;
+	private String splitRuleId;
+	private DateTime paymentDate;
+	private PayableType type;
+
+	
+	public final String getModelNamePlural() {
+		return "payables";
+	}
+
+	public final String getModelNameSingular() {
+		return "payable";
 	}
 }

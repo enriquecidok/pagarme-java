@@ -4,38 +4,56 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.pagar.enumeration.PaymentMethod;
-import me.pagar.model.Customer;
 import me.pagar.model.Metadata;
+import me.pagar.model.PagarmeObject;
 import me.pagar.model.SplitRule;
-import me.pagar.model.Transaction;
 
-@Data
-@NoArgsConstructor
-public class TransactionRequest extends Transaction implements RequestObject {
+@Getter
+public class TransactionRequest extends PagarmeObject implements RequestObject {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6464094814474395030L;
-	
+	private static final long serialVersionUID = -6529199746514627561L;
+
+	private String postbackUrl;
+	private Integer amount;
+	@Setter private Boolean async;
+	@Setter private Integer installments;
+	@Setter private DateTime boletoExpirationDate;
+	@Setter private Boolean capture;
+	@Setter private Metadata metadata;
+	@Setter private SplitRule[] splitRules;
 	@JsonUnwrapped(prefix="card_")
-	public CardRequest getCard() {
-		return super.getCard();
+	private CardRequest card;
+	private CustomerRequest customer;
+	@Setter private String softDescriptor;
+	private String cost;
+	@Setter private PaymentMethod paymentMethod;
+	private String boletoInstructions;
+
+	/**
+	 * If the antifraud is on the customer param should not be null. As a general rule, it shouldn´t be null
+	 * @param amount
+	 * @param card
+	 * @param customer
+	 */
+	public TransactionRequest(@NonNull Integer amount, @NonNull CardRequest card, CustomerRequest customer) {
+		this.amount = amount;
+		this.card = card;
+		this.customer = customer;
 	}
 
-	@Builder
-	public TransactionRequest(String id, PaymentMethod paymentMethod, String postbackUrl, Integer amount, Boolean async, Integer installments,
-			DateTime boletoExpirationDate, String softDescriptor, Boolean capture, Metadata metadata,
-			SplitRule[] splitRules, CardRequest card, Customer customer) {
-		super(id, paymentMethod, postbackUrl, amount, async, installments,
-				boletoExpirationDate, softDescriptor, capture, metadata, splitRules, card, customer);
-		// TODO Auto-generated constructor stub
+	public String getModelNamePlural() {
+		return "transactions";
 	}
-	
-	
+
+	public String getModelNameSingular() {
+		return "transaction";
+	}
 	
 }

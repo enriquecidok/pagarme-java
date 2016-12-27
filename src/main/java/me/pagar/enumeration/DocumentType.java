@@ -2,7 +2,7 @@ package me.pagar.enumeration;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum DocumentType implements JsonFieldConvertable {
+public enum DocumentType implements EnumFieldConvertable {
 	CPF("cpf"), CNPJ("cnpj");
 	
 	private String value;
@@ -17,6 +17,6 @@ public enum DocumentType implements JsonFieldConvertable {
 	}
 
 	public String getField() {
-		return this.name().toLowerCase();
+		return "document_type";
 	}
 }

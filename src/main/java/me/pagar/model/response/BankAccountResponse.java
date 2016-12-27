@@ -1,20 +1,30 @@
 package me.pagar.model.response;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.pagar.enumeration.DocumentType;
-import me.pagar.model.BankAccount;
+import lombok.Setter;
+import me.pagar.enumeration.BankAccountType;
 
-@Data
-@NoArgsConstructor
-public class BankAccountResponse extends BankAccount implements ResponseObject{
+@Getter
+@Setter(AccessLevel.PROTECTED)
+public class BankAccountResponse extends ResponseObjectImpl implements ResponseObject{
 
-	@Builder
-	public BankAccountResponse(String bankCode, String agencia, String agenciaDv, String conta, String contaDv,
-			DocumentType documentType, String documentNumber, String legalName, Boolean chargeTransferFees) {
-		super(bankCode, agencia, agenciaDv, conta, contaDv, documentType, documentNumber, legalName, chargeTransferFees);
+	private String bankCode;
+	private String agencia;
+	private String agenciaDv;
+	private String conta;
+	private String contaDv;
+	private BankAccountType type;
+	private String documentNumber;
+	private String legalName;
+	private Boolean chargeTransferFees;
+
+	public String getModelNamePlural() {
+		return "bank_accounts";
 	}
 
-	
+	public String getModelNameSingular() {
+		return "bank_account";
+	}
 }

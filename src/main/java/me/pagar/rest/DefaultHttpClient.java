@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import me.pagar.annotations.BeforeRequest;
-import me.pagar.converter.ObjectConverter;
-import me.pagar.converter.ParserException;
-import me.pagar.logging.Logger;
+import me.pagar.exception.RequestException;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -27,18 +27,14 @@ import okhttp3.Response;
 public class DefaultHttpClient implements HttpClient {
 
 	private OkHttpClient client;
-	private Logger logger;
-	private ObjectConverter converter;
 
 	@Inject
-	protected DefaultHttpClient(OkHttpClient client, Logger logger, ObjectConverter converter) {
+	protected DefaultHttpClient(OkHttpClient client) {
 		this.client = client;
-		this.logger = logger;
-		this.converter = converter;
 	}
 	
 	@BeforeRequest
-	public HttpResponse get(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException {
+	public HttpResponse get(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws RequestException {
 		Headers requestHeaders = Headers.of(headers == null ? new HashMap<String, String>() : headers);
 		
 		if(parameters != null){
@@ -53,25 +49,24 @@ public class DefaultHttpClient implements HttpClient {
 		try{
 			response = client.newCall(request).execute();
 		}catch(IOException e){
-			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
+			throw new RequestException("IOException GET " + url + ". Parameters: " + parameters.toString(), e);
 		}
 		
 		if (!response.isSuccessful()) {
-			logger.logError("GET " + url + ". Http code: " + response.code(), null);
-			throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
+			throw new RequestException("Http code: " + response.code() + " - " + new DefaultHttpResponse(response), new Exception());
 		}
 			
 		return new DefaultHttpResponse(response);
 	}
 
 	@BeforeRequest
-	public HttpResponse put(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException, ParserException {
+	public HttpResponse put(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws RequestException {
 		Headers requestHeaders = Headers.of(headers == null ? new HashMap<String, String>() : headers);
 
 		String params = "";
 		MediaType paramsType = MediaType.parse("text/plain");
 		if(parameters != null){
-			params = converter.objectToJson(parameters);
+			params =  mapToJson(parameters);
 		}
 		if(mediaType != null){
 			paramsType = MediaType.parse(mediaType);
@@ -88,22 +83,23 @@ public class DefaultHttpClient implements HttpClient {
 		try{
 			response = client.newCall(request).execute();
 		}catch(IOException e){
-			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
+			throw new RequestException("IOException GET " + url + ". Parameters: " + parameters.toString(), e);
 		}
-		if (!response.isSuccessful()) 
-			throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
+		if (!response.isSuccessful()) {
+			throw new RequestException("Http code: " + response.code() + "-" + new DefaultHttpResponse(response), new Exception());
+		}
 			
 		return new DefaultHttpResponse(response);
 	}
 
 	@BeforeRequest
-	public HttpResponse post(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws HttpException, IOException, ParserException {
+	public HttpResponse post(String url, Map<String, Object> parameters, Map<String, String> headers, String mediaType) throws RequestException {
 		Headers requestHeaders = Headers.of(headers == null ? new HashMap<String, String>() : headers);
 		
 		String params = "";
 		MediaType paramsType = MediaType.parse("text/plain");
 		if(parameters != null){
-			params = converter.objectToJson(parameters);
+			params = mapToJson(parameters);
 		}
 		if(mediaType != null){
 			paramsType = MediaType.parse(mediaType);
@@ -120,19 +116,18 @@ public class DefaultHttpClient implements HttpClient {
 		try{
 			response = client.newCall(request).execute();
 		}catch(IOException e){
-			logger.logError("IOException GET " + url + ". Parameters: " + parameters.toString(), null);
+			throw new RequestException("IOException GET " + url + ". Parameters: " + parameters.toString(), e);
 		}
 		if (!response.isSuccessful()) {
-			throw new HttpException("Http code: " + response.code(), new DefaultHttpResponse(response));
+			throw new RequestException("Http code: " + response.code() + "-" + new DefaultHttpResponse(response), new Exception());
 		}
 
 		return new DefaultHttpResponse(response);
 	}
 	
 	private String toQueryParams(Map<String, Object> request){
-		Map<String, Object> parameters = this.converter.objectToMap(request);
 		StringBuilder builder = new StringBuilder();
-		toQueryParamsRecursive(new ArrayList<String>(), parameters, builder);
+		toQueryParamsRecursive(new ArrayList<String>(), request, builder);
 		return builder.toString();
 	}
 	
@@ -162,5 +157,13 @@ public class DefaultHttpClient implements HttpClient {
 		}
 	}
 
-	
+	private String mapToJson(Map<String, Object> map){
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(map);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return "{}";
+	}
 }

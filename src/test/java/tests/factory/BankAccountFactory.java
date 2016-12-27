@@ -1,21 +1,19 @@
 package tests.factory;
 
-import me.pagar.enumeration.DocumentType;
 import me.pagar.model.request.BankAccountRequest;
 
 public class BankAccountFactory {
 
 	public BankAccountRequest create() {
-		return BankAccountRequest.builder()
-				.agencia("123456")
-				.agenciaDv("1")
-				.bankCode("111")
-				.chargeTransferFees(true)
-				.conta("1234")
-				.contaDv("2")
-				.documentNumber("2322332323")
-				.documentType(DocumentType.CPF)
-				.legalName("Nome Legal")
-				.build();
+		String bankCode = "1234";
+		String conta = "1234";
+		String contaDv = "12";
+		String agencia = "1";
+		String agenciaDv = "12";
+		String document = "1234567900";
+		String legalName = "legal";
+		Boolean chargesTransferFees = true;
+		BankAccountRequest bankAccount = new BankAccountRequest(bankCode, agencia, agenciaDv, conta, contaDv, document, legalName, chargesTransferFees);
+		return bankAccount;
 	}
 }

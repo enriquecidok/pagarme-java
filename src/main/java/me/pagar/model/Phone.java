@@ -1,21 +1,22 @@
 package me.pagar.model;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
-import me.pagar.model.request.RequestObject;
-import me.pagar.model.response.ResponseObject;
+import lombok.NonNull;
+import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
-public class Phone extends PagarmeObject implements RequestObject, ResponseObject{
+@Setter(AccessLevel.PROTECTED)
+public class Phone extends PagarmeObject{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8063840548727980750L;
 	private String ddd;
 	private String number;
-	
+
+	public Phone(@NonNull String ddd, @NonNull String number) {
+		this.ddd = ddd;
+		this.number = number;
+	}
+
 	public String getModelNamePlural() {
 		return "phones";
 	}

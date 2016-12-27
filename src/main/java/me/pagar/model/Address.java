@@ -1,25 +1,50 @@
 package me.pagar.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import me.pagar.model.request.RequestObject;
-import me.pagar.model.response.ResponseObject;
+import lombok.NonNull;
+import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
-public class Address extends PagarmeObject implements RequestObject, ResponseObject{
+@AllArgsConstructor
+@Setter(AccessLevel.PROTECTED)
+public class Address extends PagarmeObject {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3087003415236824005L;
-	
 	private String street;
 	private String streetNumber;
 	private String complementary;
 	private String neighborhood;
 	private String zipcode;
-	
+	private String coutry;
+	private String city;
+	private String state;
+
+	/**
+	 * the complementary param may be null
+	 * @param street
+	 * @param streetNumber
+	 * @param complementary
+	 * @param neighborhood
+	 * @param zipcode
+	 */
+	public Address(@NonNull String street, @NonNull String streetNumber, @NonNull String neighborhood, @NonNull String zipcode, String complementary){
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.neighborhood = neighborhood;
+		this.complementary = complementary;
+		this.zipcode = zipcode;
+	}
+
+	public Address(@NonNull String street, @NonNull String streetNumber, @NonNull String neighborhood, @NonNull String city, @NonNull String state, String complementary){
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.neighborhood = neighborhood;
+		this.complementary = complementary;
+		this.city = city;
+		this.state = state;
+	}
+
 	public String getModelNamePlural() {
 		return "addresses";
 	}
@@ -27,5 +52,4 @@ public class Address extends PagarmeObject implements RequestObject, ResponseObj
 	public String getModelNameSingular() {
 		return "address";
 	}
-	
 }

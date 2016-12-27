@@ -2,7 +2,7 @@ package me.pagar.enumeration;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum PaymentMethod implements JsonFieldConvertable {
+public enum PaymentMethod implements EnumFieldConvertable {
 
 	CREDIT_CARD("credit_card"), BOLETO("boleto");
 	
@@ -18,6 +18,6 @@ public enum PaymentMethod implements JsonFieldConvertable {
 	}
 
 	public String getField() {
-		return this.name().toLowerCase();
+		return "payment_method";
 	}
 }

@@ -1,23 +1,22 @@
 package me.pagar.model.request;
 
-import org.joda.time.DateTime;
-
 import lombok.NoArgsConstructor;
-import me.pagar.enumeration.PayableStatus;
-import me.pagar.enumeration.PayableType;
-import me.pagar.model.Payable;
+import me.pagar.model.PagarmeObject;
 
 @NoArgsConstructor
-public class PayableRequest extends Payable implements RequestObject{
+public class PayableRequest extends PagarmeObject implements RequestObject{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 895108035961056434L;
+	private static final long serialVersionUID = 5283758340958332368L;
 
-	public PayableRequest(PayableStatus status, Integer amount, Integer fee, Integer installment, String transactionId,
-			String splitRuleId, DateTime paymentDate, PayableType type) {
-		super(status, amount, fee, installment, transactionId, splitRuleId, paymentDate, type);
+	public final String getModelNamePlural() {
+		return "payables";
+	}
+
+	public final String getModelNameSingular() {
+		return "payable";
 	}
 
 }

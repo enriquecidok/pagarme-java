@@ -4,7 +4,6 @@
         "method" : "POST",
         "bodyPatterns" : [
             {"matchesJsonPath": "$.api_key"},
-            {"matchesJsonPath": "$.payment_method"},
             {"matchesJsonPath": "$.amount"}
         ]
     },

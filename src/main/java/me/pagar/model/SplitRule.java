@@ -1,36 +1,38 @@
 package me.pagar.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import me.pagar.model.request.RequestObject;
-import me.pagar.model.response.ResponseObject;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import me.pagar.model.request.RecipientRequest;
+import me.pagar.model.response.RecipientResponse;
 
-@Data
-@NoArgsConstructor
-public class SplitRule extends PagarmeObject implements ResponseObject, RequestObject {
+@Getter
+@Setter(AccessLevel.PROTECTED)
+public class SplitRule extends PagarmeObject {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2023527027241606846L;
 	private String recipientId;
 	private Boolean chargeProcessingfee;
 	private Boolean liable;
 	private Integer percentage;
 	private Integer amount;
-	
-	@Builder
-	public SplitRule(String id, String object, String recipientId,
-			Boolean chargeProcessingfee, Boolean liable, Integer percentage, Integer amount) {
-		super(id);
+
+	public SplitRule(String recipientId, Integer amount) {
 		this.recipientId = recipientId;
-		this.chargeProcessingfee = chargeProcessingfee;
-		this.liable = liable;
-		this.percentage = percentage;
 		this.amount = amount;
 	}
 
+	public SplitRule(@NonNull RecipientRequest recipient, @NonNull Integer amount){
+		@NonNull String recipientId = recipient.getId();
+		this.recipientId = recipientId;
+		this.amount = amount;
+	}
+
+	public SplitRule(@NonNull RecipientResponse recipient, @NonNull Integer amount) {
+		@NonNull String recipientId = recipient.getId();
+		this.recipientId = recipientId;
+		this.amount = amount;
+	}
 	public String getModelNamePlural() {
 		return "split_rules";
 	}

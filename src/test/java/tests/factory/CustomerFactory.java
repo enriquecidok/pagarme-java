@@ -1,5 +1,9 @@
 package tests.factory;
 
+import org.joda.time.DateTime;
+
+import me.pagar.model.Address;
+import me.pagar.model.Phone;
 import me.pagar.model.request.CustomerRequest;
 
 public class CustomerFactory {
@@ -13,14 +17,16 @@ public class CustomerFactory {
 	}
 	
 	public CustomerRequest create(){
-		CustomerRequest customer = new CustomerRequest();
-		customer.setBornAt("2016-02-22T00:00:00.000Z");
-		customer.setDocumentNumber("35965816804");
-		customer.setEmail("ewfwef@wefew.com");
-		customer.setGender("M");
-		customer.setName("name");
-		customer.setPhone(phoneFactory.create());
-		customer.setAddress(addressFactory.create());
+		String document = "35965816804";
+		String name = "NAme";
+		DateTime bornAt = new DateTime(2001, 1, 1, 0, 0);
+		String email = "email@email.com";
+		String gender = "M";
+		Phone phone = phoneFactory.create();
+		Address address = addressFactory.create();
+		CustomerRequest customer = new CustomerRequest(document, name, email, address, phone);
+		customer.setBornAt(bornAt);
+		customer.setGender(gender);
 		return customer;
 	}
 }

@@ -8,8 +8,8 @@ import java.util.Map;
 import lombok.NonNull;
 import me.pagar.PagarMeService;
 import me.pagar.converter.ObjectConverter;
-import me.pagar.converter.ParserException;
-import me.pagar.logging.Logger;
+import me.pagar.exception.ParserException;
+import me.pagar.exception.RequestException;
 import me.pagar.model.Model;
 import me.pagar.model.PagarmeRelatable;
 import me.pagar.model.queriablefields.QueriableFields;
@@ -22,18 +22,16 @@ import me.pagar.rest.HttpResponse;
 class EndpointCommonsImpl<T extends ResponseObject> {
 
 	private HttpClient client;
-	private Logger logger;
 	private ObjectConverter converter;
 	private final Class<T> clazz;
 
-	protected EndpointCommonsImpl(HttpClient client, Logger logger, ObjectConverter converter, Class<T> clazz) {
+	protected EndpointCommonsImpl(HttpClient client, ObjectConverter converter, Class<T> clazz) {
 		this.client = client;
-		this.logger = logger;
 		this.converter = converter;
 		this.clazz = clazz;
 	}
 	
-	public ArrayList<T> findAll(Model request) throws HttpException, IOException, ParserException{
+	public ArrayList<T> findAll(Model request) throws ParserException, RequestException{
 		//Workaround para quando for passado o id no request e o path não ficar /model/:id
 		String id = request.getId();
 		request.setId(null);
@@ -44,61 +42,40 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		}
 
 		HttpResponse response = null;
-		try {
-			response = this.client.get(url, parameters, null, null);
-		} catch (HttpException e) {
-			logger.logError("HttpException. FIND " + url, null);
-			throw e;
-		} catch (IOException e) {
-			logger.logError("IOException. FIND " + url, null);
-			throw e;
-		}
-		
-		
+		response = this.client.get(url, parameters, null, null);
+
 		ArrayList<T> objects = converter.jsonToObjects(response.getBody(), clazz);
 		return objects;
 	}
 
-	public ArrayList<T> findAll(QueriableFields query) throws HttpException, IOException, ParserException{
+	public ArrayList<T> findAll(QueriableFields query) throws ParserException, RequestException{
 		//Workaround para quando for passado o id no request e o path não ficar /model/:id
-		Map<String, Object> parameters = query.toMap();
-		String url = buildPathWithModels(new PagarmeRelatable[]{query}, "");
-		HttpResponse response = null;
-		try {
-			response = this.client.get(url, parameters, null, null);
-		} catch (HttpException e) {
-			logger.logError("HttpException. FIND " + url, null);
-			throw e;
-		} catch (IOException e) {
-			logger.logError("IOException. FIND " + url, null);
-			throw e;
+		String id = query.getId();
+		query.setId(null);
+		String url = buildPathWithModels(new Model[]{query}, "");
+		Map<String,Object> parameters = buildParametersWithModels(query, new HashMap<String, String>(), false);
+		if(id != null){
+			parameters.put("id", id);
 		}
-		
+		HttpResponse response = null;
+		response = this.client.get(url, parameters, null, null);
 		
 		ArrayList<T> objects = converter.jsonToObjects(response.getBody(), clazz);
 		return objects;
 	}
 
-	public ArrayList<T> findAllThrough(@NonNull Model[] models, Model request) throws ParserException, HttpException, IOException{
+	public ArrayList<T> findAllThrough(@NonNull Model[] models, Model request) throws ParserException, HttpException, IOException, RequestException{
 		String url = buildPathWithModels(models, "");
 		
 		Map<String,Object> parameters = buildParametersWithModels(request, new HashMap<String, String>(), false);
 		HttpResponse response = null;
-		try {
-			response = this.client.get(url, parameters, null, null);
-		} catch (HttpException e) {
-			logger.logError("HttpException. FIND " + url, null);
-			throw e;
-		} catch (IOException e) {
-			logger.logError("IOException. FIND " + url, null);
-			throw e;
-		}
+		response = this.client.get(url, parameters, null, null);
 		
 		ArrayList<T> objects = converter.jsonToObjects(response.getBody(), clazz);
 		return objects;
 	}
 	
-	public T save(@NonNull RequestObject request) throws HttpException, IOException, ParserException {
+	public T save(@NonNull RequestObject request) throws RequestException, ParserException {
 		//Workaround para quando for passado o id no request e o path não ficar /model/:id
 		String id = request.getId();
 		request.setId(null);
@@ -108,48 +85,46 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 			parameters.put("id", id);
 		}
 		HttpResponse response = null;
-		try {
-			if(request.existsAtPagarme()){
-				response = this.client.put(url, parameters, null, "application/json");
-			}else{
-				response = this.client.post(url, parameters, null, "application/json");
-			}
-		} catch (HttpException e) {
-			logger.logError("HttpException. SAVE " + url + ". Parameters: " + parameters, null);
-			throw e;
-		} catch (IOException e) {
-			logger.logError("IOException. SAVE " + url + ". Parameters: " + parameters, null);
-			throw e;
+		if(id != null){
+			response = this.client.put(url, parameters, null, "application/json");
+		}else{
+			response = this.client.post(url, parameters, null, "application/json");
 		}
 		
 		String responseJsonBody = response.getBody();
-		return converter.jsonToObject(responseJsonBody, clazz);
+		try {
+			return clazz.newInstance().loadFromJson(responseJsonBody);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public T doSomething(@NonNull Model[] models, Model request, @NonNull String verb) throws HttpException, IOException, ParserException {
+	public T doSomething(@NonNull Model[] models, Model request, @NonNull String verb) throws ParserException, RequestException {
 		return this.doSomething(models, request, false, new HashMap<String, String>(), verb);
 	}
 
-	public T doSomething(@NonNull Model[] models, Model request, boolean wrapRequest, @NonNull String verb) throws HttpException, IOException, ParserException {
+	public T doSomething(@NonNull Model[] models, Model request, boolean wrapRequest, @NonNull String verb) throws ParserException, RequestException {
 		return this.doSomething(models, request, wrapRequest, new HashMap<String, String>(), verb);
 	}
 
-	public T doSomething(@NonNull Model[] models, Model request, boolean wrapRequest, Map<String, String> customParameters, @NonNull String verb) throws HttpException, IOException, ParserException {
+	public T doSomething(@NonNull Model[] models, Model request, boolean wrapRequest, Map<String, String> customParameters, @NonNull String verb) throws ParserException, RequestException {
 		String url = buildPathWithModels(models , verb);
 		Map<String,Object> parameters = buildParametersWithModels(request, customParameters, wrapRequest);
 		HttpResponse response = null;
-		try {
-			response = this.client.post(url, parameters, null, "application/json");
-		} catch (HttpException e) {
-			logger.logError("HttpException. SAVE " + url + ". Parameters: " + parameters, null);
-			throw e;
-		} catch (IOException e) {
-			logger.logError("IOException. SAVE " + url + ". Parameters: " + parameters, null);
-			throw e;
-		}
+		response = this.client.post(url, parameters, null, "application/json");
 		
 		String responseJsonBody = response.getBody();
-		return converter.jsonToObject(responseJsonBody, clazz);
+		try {
+			return clazz.newInstance().loadFromJson(responseJsonBody);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private String buildPathWithModels(@NonNull PagarmeRelatable[] models, String verb){
@@ -172,7 +147,7 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.putAll(customParameters);
 		if(request != null){
-			Map<String, Object> requestMap = converter.objectToMap(request);
+			Map<String, Object> requestMap = request.toMap();
 			if(wrap){
 				parameters.put(request.getModelNameSingular(), requestMap);
 			}else{
