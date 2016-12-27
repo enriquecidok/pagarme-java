@@ -3,6 +3,7 @@ package tests.integration.endpoint;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import me.pagar.PagarMeService;
@@ -16,10 +17,13 @@ import tests.factory.TransactionFactory;
 
 public class TransactionEndpointTests {
 
-	private TransactionFactory transactionFactory;
+	private static TransactionFactory transactionFactory;
 	
-	public TransactionEndpointTests() {
+	@BeforeClass
+	public static void beforeAll() {
 		transactionFactory = new TransactionFactory();
+		PagarMeService.ENDPOINT = "https://api.pagar.me";
+		PagarMeService.VERSION = "1";
 		PagarMeService.init("ak_test_zXjKL8u5uxn25HNxHviPbhthNV0nL7", "");
 	}
 	
@@ -35,9 +39,10 @@ public class TransactionEndpointTests {
 		TransactionRequest newTransactionParameters = transactionFactory.create(PaymentMethod.CREDIT_CARD);
 		TransactionResponse newTransaction = PagarMeService.transactions.save(newTransactionParameters);
 		
-		TransactionQueriableFields query = new TransactionQueriableFields();
-		query.setId(newTransaction.getId());
-		ArrayList<TransactionResponse> foundTransactions = PagarMeService.transactions.findAll(query);
-		Assert.assertTrue(foundTransactions.size() == 1);
+		Assert.assertEquals(newTransactionParameters.getPostbackUrl(), newTransaction.getPostbackUrl());
+		Assert.assertEquals(newTransactionParameters.getSoftDescriptor(), newTransaction.getSoftDescriptor());
+		Assert.assertEquals(newTransactionParameters.getAmount(), newTransaction.getAmount());
+		Assert.assertEquals(newTransactionParameters.getInstallments(), newTransaction.getInstallments());
+		Assert.assertEquals(newTransactionParameters.getPaymentMethod(), newTransaction.getPaymentMethod());
 	}
 }

@@ -39,6 +39,7 @@ public class TransactionFactory {
 		tx.setInstallments(installments);
 		tx.setMetadata(meta);
 		tx.setSoftDescriptor(softDescriptor);
+		tx.setPaymentMethod(paymentMethod);
 		return tx;
 	}
 }

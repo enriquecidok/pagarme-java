@@ -15,7 +15,7 @@ public class EnumQueriableField<T extends EnumFieldConvertable> implements Equal
 	}
 
 	public String getFormattedString(T value) {
-		return value.getField();
+		return value.getValue();
 	}
 
 }

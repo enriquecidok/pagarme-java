@@ -10,7 +10,7 @@ import me.pagar.endpoint.Customers;
 import me.pagar.endpoint.Plans;
 import me.pagar.endpoint.Transactions;
 
-public class PagarMeService {
+public final class PagarMeService {
 
 	private static String API_KEY;
 	private static String ENCRYPTION_KEY;
@@ -31,12 +31,8 @@ public class PagarMeService {
 	}
 	
 	public static void init(String apiKey, String encryptionKey){
-		if(API_KEY== null){
-			API_KEY = apiKey;
-		}
-		if(ENCRYPTION_KEY == null){
-			ENCRYPTION_KEY = encryptionKey;
-		}
+		API_KEY = apiKey;
+		ENCRYPTION_KEY = encryptionKey;
 	}
 	
 	public static String getEndpoint(){
