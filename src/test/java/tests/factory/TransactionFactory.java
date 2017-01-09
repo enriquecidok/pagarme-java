@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 
 import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.Metadata;
+import me.pagar.model.interfaces.Transaction;
 import me.pagar.model.request.CardRequest;
 import me.pagar.model.request.CustomerRequest;
 import me.pagar.model.request.TransactionRequest;
@@ -21,7 +22,7 @@ public class TransactionFactory {
 	public TransactionRequest create(PaymentMethod paymentMethod){
 		CardRequest card = cardFactory.createRandom();
 		Integer amount = 123456789;
-		Boolean async = true;
+		Boolean async = false;
 		DateTime boletoExpiration = new DateTime().plusDays(15);
 		Boolean capture = true;
 		Integer installments = 12;
@@ -41,5 +42,11 @@ public class TransactionFactory {
 		tx.setSoftDescriptor(softDescriptor);
 		tx.setPaymentMethod(paymentMethod);
 		return tx;
+	}
+
+	public TransactionRequest createNotCaptured(PaymentMethod paymentMethod){
+		TransactionRequest request = create(paymentMethod);
+		request.setCapture(false);
+		return request;
 	}
 }

@@ -10,20 +10,25 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import me.pagar.enumeration.PaymentMethod;
+import me.pagar.enumeration.TransactionStatus;
 import me.pagar.exception.ParserException;
 import me.pagar.exception.RequestException;
 import me.pagar.model.interfaces.Transaction;
+import me.pagar.model.request.BankAccountRequest;
 import me.pagar.model.request.TransactionRequest;
+import tests.factory.BankAccountFactory;
 import tests.factory.TransactionFactory;
 
 public class TransactionEndpointTests {
 
 	private static TransactionFactory transactionFactory;
+	private static BankAccountFactory bankAccountFactory;
 	
 	@BeforeClass
 	public static void beforeAll() throws RequestException, JsonParseException, JsonMappingException, IOException {
 		IntegrationTest.setup();
 		transactionFactory = new TransactionFactory();
+		bankAccountFactory = new BankAccountFactory();
 	}
 	
 //	@Test
@@ -55,4 +60,15 @@ public class TransactionEndpointTests {
 		Transaction foundTransaction = new Transaction(newTransaction.getAttributes().getId());
 		Assert.assertEquals(newTransaction.getAttributes().getId(), foundTransaction.getAttributes().getId());
 	}
+
+	@Test
+	public void testCaptureTransaction() throws ParserException, RequestException{
+		TransactionRequest newTransactionParameters = transactionFactory.createNotCaptured(PaymentMethod.CREDIT_CARD);
+		Transaction newTransaction = new Transaction(newTransactionParameters);
+		Assert.assertEquals(TransactionStatus.AUTHORIZED, newTransaction.getAttributes().getStatus());
+
+		newTransaction.capture();
+		Assert.assertEquals(TransactionStatus.PAID, newTransaction.getAttributes().getStatus());
+	}
+
 }
