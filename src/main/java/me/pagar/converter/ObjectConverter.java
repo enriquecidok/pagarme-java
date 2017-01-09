@@ -11,4 +11,5 @@ import me.pagar.model.response.ResponseObject;
 public interface ObjectConverter {
 
 	public <T extends ResponseObject> ArrayList<T> jsonToObjects(String json, Class<T> clazz) throws ParserException;
+	public <T extends ResponseObject> T jsonToObject(String json, Class<T> clazz) throws ParserException;
 }

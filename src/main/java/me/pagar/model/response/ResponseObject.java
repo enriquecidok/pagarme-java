@@ -5,5 +5,4 @@ import me.pagar.model.Model;
 
 public interface ResponseObject extends Model {
 
-	public <T extends ResponseObject> T loadFromJson(String jsonString) throws ParserException;
 }

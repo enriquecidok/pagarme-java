@@ -2,11 +2,13 @@ package me.pagar.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter(AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Phone extends PagarmeObject{
 
 	private String ddd;

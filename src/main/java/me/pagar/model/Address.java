@@ -20,6 +20,7 @@ public class Address extends PagarmeObject {
 	private String city;
 	private String state;
 
+	private Address(){}
 	/**
 	 * the complementary param may be null
 	 * @param street

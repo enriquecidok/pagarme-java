@@ -92,14 +92,7 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		}
 		
 		String responseJsonBody = response.getBody();
-		try {
-			return clazz.newInstance().loadFromJson(responseJsonBody);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return converter.jsonToObject(responseJsonBody, clazz);
 	}
 
 	public T doSomething(@NonNull Model[] models, Model request, @NonNull String verb) throws ParserException, RequestException {
@@ -117,14 +110,7 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		response = this.client.post(url, parameters, null, "application/json");
 		
 		String responseJsonBody = response.getBody();
-		try {
-			return clazz.newInstance().loadFromJson(responseJsonBody);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return converter.jsonToObject(responseJsonBody, clazz);
 	}
 
 	private String buildPathWithModels(@NonNull PagarmeRelatable[] models, String verb){

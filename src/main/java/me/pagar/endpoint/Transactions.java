@@ -1,6 +1,5 @@
 package me.pagar.endpoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,15 +10,13 @@ import lombok.NonNull;
 import me.pagar.converter.ObjectConverter;
 import me.pagar.exception.ParserException;
 import me.pagar.exception.RequestException;
+import me.pagar.model.BankAccountObject;
 import me.pagar.model.Model;
-import me.pagar.model.queriablefields.QueriableFields;
+import me.pagar.model.TransactionObject;
 import me.pagar.model.queriablefields.TransactionQueriableFields;
-import me.pagar.model.request.BankAccountRequest;
 import me.pagar.model.request.TransactionRequest;
-import me.pagar.model.response.BankAccountResponse;
 import me.pagar.model.response.TransactionResponse;
 import me.pagar.rest.HttpClient;
-import me.pagar.rest.HttpException;
 
 public class Transactions {
 
@@ -37,16 +34,12 @@ public class Transactions {
 	public TransactionResponse save(TransactionRequest request) throws ParserException, RequestException {
 		return this.endpointCommons.save(request);
 	}
-	
-	public TransactionResponse refund(@NonNull TransactionRequest transaction, @NonNull BankAccountResponse bankAccount) throws ParserException, RequestException {
+
+	public TransactionResponse refund(@NonNull TransactionObject transaction, @NonNull BankAccountObject bankAccount) throws ParserException, RequestException {
 		return this.endpointCommons.doSomething(new Model[]{transaction}, bankAccount, true, "refund");
 	}
 
-	public TransactionResponse refund(@NonNull TransactionRequest transaction, @NonNull BankAccountRequest bankAccount) throws ParserException, RequestException {
-		return this.endpointCommons.doSomething(new Model[]{transaction}, bankAccount, true, "refund");
-	}
-
-	public TransactionResponse capture(@NonNull TransactionRequest request) throws ParserException, RequestException{
+	public TransactionResponse capture(@NonNull TransactionObject request) throws ParserException, RequestException{
 		return this.endpointCommons.doSomething(new Model[]{request}, request, "capture");
 	}
 	

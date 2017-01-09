@@ -2,13 +2,13 @@ package me.pagar.model.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.pagar.enumeration.BankAccountType;
+import me.pagar.model.BankAccountObject;
 
 @Getter
 @Setter(AccessLevel.PROTECTED)
-public class BankAccountResponse extends ResponseObjectImpl implements ResponseObject{
+public class BankAccountResponse extends BankAccountObject implements ResponseObject{
 
 	private String bankCode;
 	private String agencia;
@@ -19,12 +19,4 @@ public class BankAccountResponse extends ResponseObjectImpl implements ResponseO
 	private String documentNumber;
 	private String legalName;
 	private Boolean chargeTransferFees;
-
-	public String getModelNamePlural() {
-		return "bank_accounts";
-	}
-
-	public String getModelNameSingular() {
-		return "bank_account";
-	}
 }

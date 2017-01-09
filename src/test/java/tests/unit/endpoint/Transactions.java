@@ -4,7 +4,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.matching;
 import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 
 import java.util.List;
@@ -43,10 +43,11 @@ public class Transactions extends UnitTest {
 		query.setId(transactionId);
 		List<TransactionResponse> txs = PagarMeService.transactions.findAll(query);
 
-		verify(getRequestedFor(urlMatching("/1/transactions.*"))
-			.withQueryParam("api_key", matching(".+"))
-			.withQueryParam("id", equalTo("123456"))
-			.withQueryParam("payment_method", equalTo("boleto"))
+		verify(
+			getRequestedFor(urlPathMatching("/1/transactions.*"))
+				.withQueryParam("api_key", matching(".+"))
+				.withQueryParam("id", equalTo("123456"))
+				.withQueryParam("payment_method", equalTo("boleto"))
 		);
 	}
 
@@ -55,7 +56,7 @@ public class Transactions extends UnitTest {
 		TransactionRequest request = transactionFactory.create(PaymentMethod.BOLETO);
 		TransactionResponse tx = PagarMeService.transactions.save(request);
 
-		verify(postRequestedFor(urlMatching("/1/transactions"))
+		verify(postRequestedFor(urlPathMatching("/1/transactions"))
 			.withRequestBody(matchingJsonPath("$.api_key"))
 			.withRequestBody(matchingJsonPath("$.amount"))
 		);
@@ -68,7 +69,7 @@ public class Transactions extends UnitTest {
 		request.setId(transactionId);
 		TransactionResponse tx = PagarMeService.transactions.capture(request);
 
-		verify(postRequestedFor(urlMatching("/1/transactions/" + transactionId + "/capture"))
+		verify(postRequestedFor(urlPathMatching("/1/transactions/" + transactionId + "/capture"))
 			.withRequestBody(matchingJsonPath("$.api_key"))
 		);
 	}
@@ -80,7 +81,7 @@ public class Transactions extends UnitTest {
 		request.setId(transactionId);
 		PagarMeService.transactions.collectPayment(request, "henrique.kano@pagar.me");
 
-		verify(postRequestedFor(urlMatching("/1/transactions/" + transactionId + "/collect_payment"))
+		verify(postRequestedFor(urlPathMatching("/1/transactions/" + transactionId + "/collect_payment"))
 			.withRequestBody(matchingJsonPath("$.api_key"))
 			.withRequestBody(matchingJsonPath("$.email"))
 		);
@@ -94,7 +95,7 @@ public class Transactions extends UnitTest {
 		BankAccountRequest bankAccount = bankAccountFactory.create();
 		TransactionResponse tx = PagarMeService.transactions.refund(transaction, bankAccount);
 
-		verify(postRequestedFor(urlMatching("/1/transactions/" + transactionId + "/refund"))
+		verify(postRequestedFor(urlPathMatching("/1/transactions/" + transactionId + "/refund"))
 			.withRequestBody(matchingJsonPath("$.api_key"))
 			.withRequestBody(matchingJsonPath("$.bank_account.bank_code"))
 			.withRequestBody(matchingJsonPath("$.bank_account.agencia"))

@@ -3,11 +3,14 @@ package me.pagar.converter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -54,10 +57,10 @@ public class DefaultObjectConverter implements ObjectConverter {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T extends ResponseObject> ArrayList<T> jsonToObjects(String json, Class<T> clazz) throws ParserException {
 		try {
-			ArrayList<T> mapped = mapper.readValue(json, ArrayList.class);
+			JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
+			ArrayList<T> mapped = mapper.readValue(json, type);
 			return mapped;
 		} catch (JsonParseException e) {
 			throw new ParserException("Parse Exception: " + json, e);

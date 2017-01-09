@@ -9,11 +9,11 @@ import lombok.NonNull;
 import lombok.Setter;
 import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.Metadata;
-import me.pagar.model.PagarmeObject;
 import me.pagar.model.SplitRule;
+import me.pagar.model.TransactionObject;
 
 @Getter
-public class TransactionRequest extends PagarmeObject implements RequestObject {
+public class TransactionRequest extends TransactionObject implements RequestObject {
 
 	/**
 	 * 
@@ -48,12 +48,7 @@ public class TransactionRequest extends PagarmeObject implements RequestObject {
 		this.customer = customer;
 	}
 
-	public String getModelNamePlural() {
-		return "transactions";
+	public TransactionRequest(@NonNull String id){
+		setId(id);
 	}
-
-	public String getModelNameSingular() {
-		return "transaction";
-	}
-	
 }

@@ -20,19 +20,19 @@ public abstract class QueriableFields implements RequestObject{
 	private HashMap<String, String> filter = new HashMap<String, String>();
 
 	protected <T> void lessOrEquals(RangeQueriable<T> field, T value){
-		filter.put(field.getKey(), "<=" + field.getFormattedString(value));
+		removeKeyIfValueNull(field.getKey(), "<=" + field.getFormattedString(value));
 	}
 
 	protected <T> void greaterOrEquals(RangeQueriable<T> field, T value){
-		filter.put(field.getKey(), ">=" + field.getFormattedString(value));
+		removeKeyIfValueNull(field.getKey(), ">=" + field.getFormattedString(value));
 	}
 
 	protected <T> void equals(EqualityQueriable<T> field, T value){
-		filter.put(field.getKey(), field.getFormattedString(value));
+		removeKeyIfValueNull(field.getKey(), field.getFormattedString(value));
 	}
 
 	protected <T> void notEqual(EqualityQueriable<T> field, T value){
-		filter.put(field.getKey(), "!=" + field.getFormattedString(value));
+		removeKeyIfValueNull(field.getKey(), "!=" + field.getFormattedString(value));
 	}
 
 	public void setId(String id) {
@@ -51,9 +51,17 @@ public abstract class QueriableFields implements RequestObject{
 		return this.filter.get("id");
 	}
 
-	public HashMap<String, Object> toMap(){
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.putAll(filter);
-		return map;
+	private void removeKeyIfValueNull(String key, String value){
+		if(value != null){
+			filter.put(key, value);
+		}else{
+			filter.remove(key);
+		}
+	}
+
+	public HashMap<String, Object> toMap() {
+		HashMap<String, Object> converted = new HashMap<String, Object>();
+		converted.putAll(filter);
+		return converted;
 	}
 }

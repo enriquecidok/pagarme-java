@@ -2,43 +2,59 @@ package me.pagar.model.response;
 
 import org.joda.time.DateTime;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import me.pagar.enumeration.CardBrand;
 import me.pagar.enumeration.PaymentMethod;
 import me.pagar.enumeration.TransactionStatus;
+import me.pagar.model.Address;
 import me.pagar.model.Metadata;
+import me.pagar.model.Phone;
 import me.pagar.model.SplitRule;
+import me.pagar.model.TransactionObject;
 
 @Getter
-@Setter(AccessLevel.PROTECTED)
-public class TransactionResponse extends ResponseObjectImpl implements ResponseObject {
+public class TransactionResponse extends TransactionObject implements ResponseObject {
 
-	private String postbackUrl;
-	private Integer amount;
-	private Boolean async;
-	private Integer installments;
-	private DateTime boletoExpirationDate;
-	private Boolean capture;
-	private Metadata metadata;
-	private SplitRule[] splitRules;
-	private CardResponse card;
-	private CustomerResponse customer;
+	private String object;
 	private TransactionStatus status;
+	private String refuseReason;
 	private String statusReason;
-	private String acquirerName;
 	private String acquirerResponseCode;
+	private String acquirerName;
+	private String acquirerId;
 	private String authorizationCode;
 	private String softDescriptor;
 	private String tid;
 	private String nsu;
-	private String cost;
+	private DateTime dateCreated;
+	private DateTime dateUpdated;
+	private Integer amount;
+	private Integer authorizedAmount;
+	private Integer paidAmount;
+	private Integer refundedAmount;
+	private Integer installments;
+	private Integer cost;
+	private String cardHolderName;
+	private String cardLastDigits;
+	private String cardFirstDigits;
+	private CardBrand cardBrand;
+	private String postbackUrl;
 	private PaymentMethod paymentMethod;
+	private String captureMethod;
+	private String antifraudScore;
 	private String boletoUrl;
 	private String boletoBarcode;
+	private DateTime boletoExpirationDate;
 	private String referer;
 	private String ip;
 	private String subscriptionId;
+	private Phone phone;
+	private Address address;
+	private CustomerResponse customer;
+	private CardResponse card;
+	private SplitRule[] splitRules;
+	private Metadata metadata;
+	private Metadata antifraudMetadata;
 
 	public String getModelNamePlural() {
 		return "transactions";

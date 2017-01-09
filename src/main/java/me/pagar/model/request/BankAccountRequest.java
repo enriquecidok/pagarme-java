@@ -3,10 +3,10 @@ package me.pagar.model.request;
 import lombok.Getter;
 import lombok.NonNull;
 import me.pagar.enumeration.BankAccountType;
-import me.pagar.model.PagarmeObject;
+import me.pagar.model.BankAccountObject;
 
 @Getter
-public class BankAccountRequest extends PagarmeObject implements RequestObject{
+public class BankAccountRequest extends BankAccountObject implements RequestObject{
 	
 	/**
 	 * 
@@ -32,14 +32,6 @@ public class BankAccountRequest extends PagarmeObject implements RequestObject{
 		this.documentNumber = document;
 		this.legalName = legalName;
 		this.chargeTransferFees = chargesTransferFees;
-	}
-
-	public String getModelNamePlural() {
-		return "bank_account";
-	}
-
-	public String getModelNameSingular() {
-		return "bank_account";
 	}
 
 }
