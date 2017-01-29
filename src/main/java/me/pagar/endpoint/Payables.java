@@ -1,6 +1,5 @@
 package me.pagar.endpoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.google.inject.Inject;
@@ -13,7 +12,6 @@ import me.pagar.model.TransactionObject;
 import me.pagar.model.queriablefields.PayableQueriableFields;
 import me.pagar.model.response.PayableResponse;
 import me.pagar.rest.HttpClient;
-import me.pagar.rest.HttpException;
 
 public class Payables {
 	
@@ -24,11 +22,11 @@ public class Payables {
 		this.endpointCommons = new EndpointCommonsImpl<PayableResponse>(client, converter, PayableResponse.class);
 	}
 	
-	public ArrayList<PayableResponse> findAll(TransactionObject transaction, PayableQueriableFields payable) throws ParserException, RequestException, HttpException, IOException {
-		return this.endpointCommons.findAllThrough(new Model[]{transaction}, payable);
+	public ArrayList<PayableResponse> findAll(TransactionObject transaction, PayableQueriableFields payable) throws ParserException, RequestException {
+		return this.endpointCommons.findAllThrough(new Model[]{transaction, payable}, payable);
 	}
 	
-	public ArrayList<PayableResponse> findAll(PayableQueriableFields payable) throws ParserException, RequestException, HttpException, IOException{
+	public ArrayList<PayableResponse> findAll(PayableQueriableFields payable) throws ParserException, RequestException {
 		return this.endpointCommons.findAll(payable);
 	}
 	

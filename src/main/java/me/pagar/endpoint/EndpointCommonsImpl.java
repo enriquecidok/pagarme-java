@@ -64,7 +64,7 @@ class EndpointCommonsImpl<T extends ResponseObject> {
 		return objects;
 	}
 
-	public ArrayList<T> findAllThrough(@NonNull Model[] models, Model request) throws ParserException, HttpException, IOException, RequestException{
+	public ArrayList<T> findAllThrough(@NonNull Model[] models, Model request) throws ParserException, RequestException{
 		String url = buildPathWithModels(models, "");
 		
 		Map<String,Object> parameters = buildParametersWithModels(request, new HashMap<String, String>(), false);

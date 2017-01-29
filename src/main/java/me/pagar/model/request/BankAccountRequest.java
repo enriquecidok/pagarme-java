@@ -34,4 +34,7 @@ public class BankAccountRequest extends BankAccountObject implements RequestObje
 		this.chargeTransferFees = chargesTransferFees;
 	}
 
+	public BankAccountRequest(@NonNull String id){
+		setId(id);
+	}
 }

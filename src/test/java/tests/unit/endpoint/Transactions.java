@@ -53,7 +53,7 @@ public class Transactions extends UnitTest {
 
 	@Test
 	public void testTransactionCreation() throws ParserException, RequestException{
-		TransactionRequest request = transactionFactory.create(PaymentMethod.BOLETO);
+		TransactionRequest request = transactionFactory.createSimplest(PaymentMethod.BOLETO);
 		TransactionResponse tx = PagarMeService.transactions.save(request);
 
 		verify(postRequestedFor(urlPathMatching("/1/transactions"))
@@ -65,7 +65,7 @@ public class Transactions extends UnitTest {
 	@Test
 	public void testTransactionCapture() throws ParserException, RequestException{
 		String transactionId = "123456";
-		TransactionRequest request = transactionFactory.create(PaymentMethod.BOLETO);
+		TransactionRequest request = transactionFactory.createSimplest(PaymentMethod.BOLETO);
 		request.setId(transactionId);
 		TransactionResponse tx = PagarMeService.transactions.capture(request);
 
@@ -77,7 +77,7 @@ public class Transactions extends UnitTest {
 	@Test
 	public void testTransactionCollectPayment() throws ParserException, RequestException{
 		String transactionId = "123456";
-		TransactionRequest request = transactionFactory.create(PaymentMethod.BOLETO);
+		TransactionRequest request = transactionFactory.createSimplest(PaymentMethod.BOLETO);
 		request.setId(transactionId);
 		PagarMeService.transactions.collectPayment(request, "henrique.kano@pagar.me");
 
@@ -90,7 +90,7 @@ public class Transactions extends UnitTest {
 	@Test
 	public void testTransactionRefund() throws ParserException, RequestException{
 		String transactionId = "123456";
-		TransactionRequest transaction = transactionFactory.create(PaymentMethod.BOLETO);
+		TransactionRequest transaction = transactionFactory.createSimplest(PaymentMethod.BOLETO);
 		transaction.setId(transactionId);
 		BankAccountRequest bankAccount = bankAccountFactory.create();
 		TransactionResponse tx = PagarMeService.transactions.refund(transaction, bankAccount);

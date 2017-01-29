@@ -35,8 +35,16 @@ public class Transactions {
 		return this.endpointCommons.save(request);
 	}
 
-	public TransactionResponse refund(@NonNull TransactionObject transaction, @NonNull BankAccountObject bankAccount) throws ParserException, RequestException {
-		return this.endpointCommons.doSomething(new Model[]{transaction}, bankAccount, true, "refund");
+	public TransactionResponse refund(@NonNull TransactionObject transaction, BankAccountObject bankAccount) throws ParserException, RequestException {
+		TransactionRequest request = new TransactionRequest(transaction.getId());
+		request.setBankAccount(bankAccount);
+		return this.endpointCommons.doSomething(new Model[]{request}, request, false, "refund");
+	}
+
+	public TransactionResponse refund(@NonNull TransactionObject transaction, @NonNull Integer amount) throws ParserException, RequestException {
+		TransactionRequest request = new TransactionRequest(transaction.getId());
+		request.setAmount(amount);
+		return this.endpointCommons.doSomething(new Model[]{request}, request, false, "refund");
 	}
 
 	public TransactionResponse capture(@NonNull TransactionObject request) throws ParserException, RequestException{

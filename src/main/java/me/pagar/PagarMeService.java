@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 
 import me.pagar.dependencyInjection.ListenersModule;
 import me.pagar.dependencyInjection.RestClientModule;
+import me.pagar.endpoint.BankAccounts;
 import me.pagar.endpoint.Cards;
 import me.pagar.endpoint.Customers;
 import me.pagar.endpoint.Payables;
@@ -23,6 +24,7 @@ public final class PagarMeService {
 	public final static Customers customers;
 	public final static Plans plans;
 	public final static Payables payables;
+	public final static BankAccounts bankAccounts;
 
 	static{
 		Injector injector = Guice.createInjector(new ListenersModule(), new RestClientModule());
@@ -31,6 +33,7 @@ public final class PagarMeService {
 		customers = injector.getInstance(Customers.class);
 		plans = injector.getInstance(Plans.class);
 		payables = injector.getInstance(Payables.class);
+		bankAccounts = injector.getInstance(BankAccounts.class);
 	}
 	
 	public static void init(String apiKey, String encryptionKey){

@@ -1,5 +1,7 @@
 package me.pagar.model.request;
 
+import java.util.HashMap;
+
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -7,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.val;
 import me.pagar.enumeration.PaymentMethod;
+import me.pagar.model.BankAccountObject;
 import me.pagar.model.Metadata;
 import me.pagar.model.SplitRule;
 import me.pagar.model.TransactionObject;
@@ -21,7 +25,7 @@ public class TransactionRequest extends TransactionObject implements RequestObje
 	private static final long serialVersionUID = -6529199746514627561L;
 
 	private String postbackUrl;
-	private Integer amount;
+	@Setter private Integer amount;
 	@Setter private Boolean async;
 	@Setter private Integer installments;
 	@Setter private DateTime boletoExpirationDate;
@@ -35,6 +39,7 @@ public class TransactionRequest extends TransactionObject implements RequestObje
 	private String cost;
 	@Setter private PaymentMethod paymentMethod;
 	private String boletoInstructions;
+	@Setter private BankAccountObject bankAccount;
 
 	/**
 	 * If the antifraud is on the customer param should not be null. As a general rule, it shouldn´t be null
@@ -50,5 +55,15 @@ public class TransactionRequest extends TransactionObject implements RequestObje
 
 	public TransactionRequest(@NonNull String id){
 		setId(id);
+	}
+
+	@Override
+	public HashMap<String, Object> toMap() {
+		val returnMap = super.toMap();
+		if(bankAccount != null && bankAccount.getId() != null){
+			returnMap.remove("bank_account");
+			returnMap.put("bank_account_id", bankAccount.getId());
+		}
+		return returnMap;
 	}
 }

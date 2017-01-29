@@ -1,6 +1,7 @@
 package tests.integration.endpoint;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -11,13 +12,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import me.pagar.enumeration.PaymentMethod;
 import me.pagar.enumeration.TransactionStatus;
+import me.pagar.exception.PagarMeApiException;
 import me.pagar.exception.ParserException;
 import me.pagar.exception.RequestException;
-import me.pagar.model.interfaces.Transaction;
-import me.pagar.model.request.BankAccountRequest;
+import me.pagar.model.facade.Payable;
+import me.pagar.model.facade.Transaction;
 import me.pagar.model.request.TransactionRequest;
 import tests.factory.BankAccountFactory;
 import tests.factory.TransactionFactory;
+import tests.integration.helpers.TransactionPreConditions;
 
 public class TransactionEndpointTests {
 
@@ -41,8 +44,8 @@ public class TransactionEndpointTests {
 //	}
 	
 	@Test
-	public void testSaveTransaction() throws ParserException, RequestException{
-		TransactionRequest newTransactionParameters = transactionFactory.create(PaymentMethod.CREDIT_CARD);
+	public void testSaveTransaction() throws ParserException, RequestException, PagarMeApiException{
+		TransactionRequest newTransactionParameters = transactionFactory.createSimplest(PaymentMethod.CREDIT_CARD);
 		Transaction newTransaction = new Transaction(newTransactionParameters);
 
 		Assert.assertEquals(newTransactionParameters.getPostbackUrl(), newTransaction.getAttributes().getPostbackUrl());
@@ -53,22 +56,55 @@ public class TransactionEndpointTests {
 	}
 
 	@Test
-	public void testFindTransaction() throws ParserException, RequestException{
-		TransactionRequest newTransactionParameters = transactionFactory.create(PaymentMethod.CREDIT_CARD);
-		Transaction newTransaction = new Transaction(newTransactionParameters);
+	public void testFindTransaction() throws ParserException, RequestException, PagarMeApiException{
+		Transaction newTransaction = TransactionPreConditions.withSimpleTransaction(PaymentMethod.CREDIT_CARD);
 
 		Transaction foundTransaction = new Transaction(newTransaction.getAttributes().getId());
 		Assert.assertEquals(newTransaction.getAttributes().getId(), foundTransaction.getAttributes().getId());
 	}
 
 	@Test
-	public void testCaptureTransaction() throws ParserException, RequestException{
-		TransactionRequest newTransactionParameters = transactionFactory.createNotCaptured(PaymentMethod.CREDIT_CARD);
-		Transaction newTransaction = new Transaction(newTransactionParameters);
+	public void testCaptureTransaction() throws ParserException, RequestException, PagarMeApiException{
+		Transaction newTransaction = TransactionPreConditions.withNonCapturedTransaction(PaymentMethod.BOLETO);
 		Assert.assertEquals(TransactionStatus.AUTHORIZED, newTransaction.getAttributes().getStatus());
 
-		newTransaction.capture();
+		newTransaction.capture(newTransaction.getAttributes().getAmount(), null);
+		Assert.assertEquals(TransactionStatus.WAITING_PAYMENT, newTransaction.getAttributes().getStatus());
+	}
+
+	@Test
+	public void testRefundTransaction() throws RequestException, PagarMeApiException{
+		Transaction newTransaction = TransactionPreConditions.withSimpleTransaction(PaymentMethod.CREDIT_CARD);
+		Assert.assertEquals(TransactionStatus.PAID, newTransaction.getAttributes().getStatus());
+
+		newTransaction.refund();
+		Assert.assertEquals(TransactionStatus.REFUNDED, newTransaction.getAttributes().getStatus());
+	}
+
+	@Test
+	public void testPartialRefund() throws RequestException, PagarMeApiException {
+		Transaction newTransaction = TransactionPreConditions.withSimpleTransaction(PaymentMethod.CREDIT_CARD);
+		Assert.assertEquals(TransactionStatus.PAID, newTransaction.getAttributes().getStatus());
+
+		Integer refundedAmount = newTransaction.getAttributes().getAmount() / 2;
+		newTransaction.refund(refundedAmount);
+		Assert.assertEquals(TransactionStatus.PAID, newTransaction.getAttributes().getStatus());
+		Assert.assertEquals(refundedAmount, newTransaction.getAttributes().getRefundedAmount());
+	}
+
+	@Test
+	public void testCaptureWithSplitRules() throws RequestException, PagarMeApiException{
+		Transaction newTransaction = TransactionPreConditions.withNonCapturedTransaction(PaymentMethod.CREDIT_CARD);
+		Assert.assertEquals(TransactionStatus.AUTHORIZED, newTransaction.getAttributes().getStatus());
+
+		newTransaction.capture(newTransaction.getAttributes().getAmount(), null);
 		Assert.assertEquals(TransactionStatus.PAID, newTransaction.getAttributes().getStatus());
 	}
 
+	@Test
+	public void testPayableList() throws RequestException, PagarMeApiException {
+		Transaction newTransaction = TransactionPreConditions.withSimpleTransaction(PaymentMethod.CREDIT_CARD);
+		List<Payable> payables = newTransaction.payables();
+		Assert.assertEquals(newTransaction.getAttributes().getInstallments(), (Integer)payables.size());
+	}
 }

@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 
 import me.pagar.enumeration.PaymentMethod;
 import me.pagar.model.Metadata;
-import me.pagar.model.interfaces.Transaction;
 import me.pagar.model.request.CardRequest;
 import me.pagar.model.request.CustomerRequest;
 import me.pagar.model.request.TransactionRequest;
@@ -19,7 +18,7 @@ public class TransactionFactory {
 		this.cardFactory = new CardFactory();
 	}
 	
-	public TransactionRequest create(PaymentMethod paymentMethod){
+	public TransactionRequest createSimplest(PaymentMethod paymentMethod){
 		CardRequest card = cardFactory.createRandom();
 		Integer amount = 123456789;
 		Boolean async = false;
@@ -45,7 +44,7 @@ public class TransactionFactory {
 	}
 
 	public TransactionRequest createNotCaptured(PaymentMethod paymentMethod){
-		TransactionRequest request = create(paymentMethod);
+		TransactionRequest request = createSimplest(paymentMethod);
 		request.setCapture(false);
 		return request;
 	}
