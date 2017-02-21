@@ -11,7 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import me.pagar.annotations.BeforeRequest;
+import me.pagar.converter.DefaultObjectConverter;
+import me.pagar.exception.PagarMeApiException;
 import me.pagar.exception.RequestException;
+import me.pagar.model.Error;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -27,10 +30,12 @@ import okhttp3.Response;
 public class DefaultHttpClient implements HttpClient {
 
 	private OkHttpClient client;
+	private DefaultObjectConverter mapper;
 
 	@Inject
-	protected DefaultHttpClient(OkHttpClient client) {
+	protected DefaultHttpClient(OkHttpClient client, DefaultObjectConverter mapper) {
 		this.client = client;
+		this.mapper = mapper;
 	}
 	
 	@BeforeRequest
@@ -86,7 +91,12 @@ public class DefaultHttpClient implements HttpClient {
 			throw new RequestException("IOException GET " + url + ". Parameters: " + parameters.toString(), e);
 		}
 		if (!response.isSuccessful()) {
-			throw new RequestException("Http code: " + response.code() + "-" + new DefaultHttpResponse(response), new Exception());
+			if(response.code() >= 400 && response.code() < 500){
+				me.pagar.model.Error error = (Error)mapper.jsonToObject(response.body().string(), me.pagar.model.Error.class);
+				throw new PagarMeApiException("", error, new Exception());
+			} else {
+				throw new RequestException("Http code: " + response.code() + "-" + new DefaultHttpResponse(response), new Exception());
+			} 
 		}
 			
 		return new DefaultHttpResponse(response);
